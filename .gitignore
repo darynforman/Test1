@@ -1,0 +1,12 @@
+.env
+.env.*
+
+# Go build output
+bin/
+*.exe
+*.out
+*.test
+storage/
+
+# Local database connection files
+*.local

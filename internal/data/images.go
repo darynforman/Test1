@@ -1,0 +1,30 @@
+package data
+
+import (
+	"context"
+	"database/sql"
+	"time"
+)
+
+type Image struct {
+	ID               int64     `json:"id"`
+	OriginalFilename string    `json:"original_filename"`
+	StoredFilename   string    `json:"-"`
+	MediaType        string    `json:"media_type"`
+	SizeBytes        int64     `json:"size_bytes"`
+	CreatedAt        time.Time `json:"created_at"`
+}
+
+type ImageModel struct{ DB *sql.DB }
+
+// Insert stores metadata only after the original bytes have been written.
+// Job creation is intentionally deferred to Phase 2.
+func (m ImageModel) Insert(image *Image) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	return m.DB.QueryRowContext(ctx, `INSERT INTO images
+		(original_filename,stored_filename,media_type,size_bytes)
+		VALUES($1,$2,$3,$4) RETURNING id,created_at`,
+		image.OriginalFilename, image.StoredFilename, image.MediaType, image.SizeBytes,
+	).Scan(&image.ID, &image.CreatedAt)
+}
