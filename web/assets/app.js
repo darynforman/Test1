@@ -9,6 +9,7 @@ const processButton=document.querySelector('#process');
 const errorBox=document.querySelector('#error');
 let chosenFile=null;
 let previewURL=null;
+// This guard prevents another POST while the current upload is still pending.
 let isSubmitting=false;
 
 function clearSelection(){
@@ -34,6 +35,7 @@ function choose(file){
 	}
 	chosenFile=file;
 	if(previewURL)URL.revokeObjectURL(previewURL);
+	// The object URL previews the local file without uploading it.
 	previewURL=URL.createObjectURL(file);
 	preview.src=previewURL;
 	filename.textContent=file.name;
@@ -54,6 +56,7 @@ dropzone.addEventListener('drop',event=>choose(event.dataTransfer.files[0]));
 
 processButton.addEventListener('click',async()=>{
 	if(isSubmitting||!chosenFile)return;
+	// Lock immediately, before fetch, so rapid clicks cannot overlap requests.
 	isSubmitting=true;
 	processButton.disabled=true;
 	processButton.textContent='Uploading...';

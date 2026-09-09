@@ -34,6 +34,7 @@ type application struct {
 func main() {
 	var cfg config
 
+	// Command-line flags keep machine-specific settings out of the source code.
 	flag.IntVar(&cfg.port, "port", 4000, "API server port")
 	flag.StringVar(&cfg.env, "env", "development", "Environment (development|staging|production)")
 	flag.StringVar(&cfg.storageDir, "storage-dir", "storage", "Image storage directory")
@@ -46,12 +47,14 @@ func main() {
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
+	// Confirm the database works before starting the HTTP server.
 	db, err := openDB(cfg)
 	if err != nil {
 		logger.Error(err.Error())
 		os.Exit(1)
 	}
 	defer db.Close()
+	// MkdirAll is safe when the directory already exists.
 	if err := os.MkdirAll(filepath.Join(cfg.storageDir, "originals"), 0750); err != nil {
 		logger.Error(err.Error())
 		os.Exit(1)
@@ -82,6 +85,7 @@ func openDB(cfg config) (*sql.DB, error) {
 	db.SetMaxIdleConns(cfg.db.maxIdleConns)
 	db.SetConnMaxIdleTime(cfg.db.maxIdleTime)
 
+	// Avoid waiting forever when PostgreSQL is stopped or misconfigured.
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 

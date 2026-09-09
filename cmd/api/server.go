@@ -14,11 +14,13 @@ import (
 func (a *application) serve() error {
 	srv := &http.Server{Addr: fmt.Sprintf(":%d", a.config.port), Handler: a.routes(), IdleTimeout: time.Minute, ReadTimeout: 15 * time.Second, WriteTimeout: 30 * time.Second}
 	done := make(chan error, 1)
+	// Listen for Ctrl+C or a system stop request in a separate goroutine.
 	go func() {
 		quit := make(chan os.Signal, 1)
 		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 		s := <-quit
 		a.logger.Info("caught signal", "signal", s.String())
+		// Give active requests time to finish during a graceful shutdown.
 		ctx, c := context.WithTimeout(context.Background(), 30*time.Second)
 		defer c()
 		if e := srv.Shutdown(ctx); e != nil {
