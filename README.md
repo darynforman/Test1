@@ -27,7 +27,9 @@ The job tables are prepared by the migration, but job creation, `202 Accepted`, 
 ```bash
 createdb imagelab
 export IMAGELAB_DB_DSN='postgres://USER:PASSWORD@localhost/imagelab?sslmode=disable'
-psql "$IMAGELAB_DB_DSN" -f migrations/000001_create_imagelab.up.sql
+for migration in migrations/*.up.sql; do
+  psql "$IMAGELAB_DB_DSN" -v ON_ERROR_STOP=1 -f "$migration" || break
+done
 go run ./cmd/api -db-dsn="$IMAGELAB_DB_DSN"
 ```
 
@@ -43,3 +45,9 @@ GOCACHE=/tmp/imagelab-go-cache go vet ./...
 ```
 
 The earlier measurement lab is used only as a small Go/PostgreSQL structural base because no separate ImageLab starter was supplied.
+
+## Table migrations
+
+Each table has its own up/down migration: `000001` images, `000002` jobs, and `000003` variants. Apply up migrations in that order; roll back in reverse order because jobs and variants reference images. Down migrations delete the corresponding data.
+
+If your Week 1 database already has all three tables from `000001_create_imagelab.up.sql`, **do not rerun these create-table migrations**. The schema is unchanged, so continue using that database. The setup loop above is for a fresh database. If you use a migration tracking tool, reconcile its recorded version with the three existing tables before running further migrations.
