@@ -14,10 +14,11 @@ import (
 )
 
 type config struct {
-	port       int
-	env        string
-	storageDir string
-	db         struct {
+	port        int
+	env         string
+	storageDir  string
+	workerDelay time.Duration
+	db          struct {
 		dsn          string
 		maxOpenConns int
 		maxIdleConns int
@@ -43,6 +44,7 @@ func main() {
 	flag.IntVar(&cfg.db.maxIdleConns, "db-max-idle-conns", 25, "PostgreSQL max idle connections")
 	flag.DurationVar(&cfg.db.maxIdleTime, "db-max-idle-time", 15*time.Minute, "PostgreSQL max connection idle time")
 
+	flag.DurationVar(&cfg.workerDelay, "worker-delay", 0, "Optional processing delay for check-in demonstrations")
 	flag.Parse()
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
@@ -68,7 +70,12 @@ func main() {
 		models: data.NewModels(db),
 	}
 
+	workerCtx, stopWorker := context.WithCancel(context.Background())
+	workerDone := make(chan struct{})
+	go func() { defer close(workerDone); app.runWorker(workerCtx) }()
 	err = app.serve()
+	stopWorker()
+	<-workerDone
 	if err != nil {
 		logger.Error(err.Error())
 		os.Exit(1)

@@ -44,7 +44,7 @@ function choose(file){
 	empty.hidden=true;
 	selected.hidden=false;
 	selected.style.display='flex';
-	processButton.disabled=false;
+	processButton.disabled=isSubmitting;
 }
 
 dropzone.addEventListener('click',event=>{if(!event.target.closest('#replace'))fileInput.click();});
@@ -69,9 +69,9 @@ processButton.addEventListener('click',async()=>{
 		let data={};
 		try{data=responseText?JSON.parse(responseText):{};}catch{throw new Error('The upload API returned an invalid response. Start and open the Go application on port 4000.');}
 		if(!responseText)throw new Error('The upload API is unavailable. Start and open the Go application on port 4000.');
-		if(response.status!==201)throw new Error(data.error||'Upload was rejected.');
-		document.querySelector('#jobTitle').textContent='Original stored';
-		document.querySelector('#jobText').textContent=`Image #${data.image.id} is ready for Phase 2 job processing`;
+		if(response.status!==202)throw new Error(data.error||'Upload was rejected.');
+		document.querySelector('#jobTitle').textContent='Upload accepted';
+		document.querySelector('#jobText').textContent=`Job #${data.job_id}: ${data.status}. Status resource: ${data.status_url}`;
 	}catch(error){
 		errorBox.textContent=error.message;
 	}finally{

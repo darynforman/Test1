@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"crypto/rand"
 	"encoding/hex"
 	"errors"
@@ -15,12 +16,12 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 const maxImageBytes = 10 << 20
 
-// createImageHandler validates and stores one original image for Week 1.
-// Variant generation belongs to the background worker added in Week 2.
+// createImageHandler durably accepts work; only the worker generates variants.
 func (app *application) createImageHandler(w http.ResponseWriter, r *http.Request) {
 	// Allow a little extra space for the multipart form fields around the 10 MB file.
 	r.Body = http.MaxBytesReader(w, r.Body, maxImageBytes+(1<<20))
@@ -51,8 +52,8 @@ func (app *application) createImageHandler(w http.ResponseWriter, r *http.Reques
 		app.badRequestResponse(w, r, fmt.Errorf("image must be JPEG or PNG"))
 		return
 	}
-	// Decode the header to reject damaged files that only look like JPEG or PNG data.
-	if _, _, err = image.DecodeConfig(bytes.NewReader(b)); err != nil {
+	// Decode the entire input so truncated image data is rejected before acceptance.
+	if _, _, err = image.Decode(bytes.NewReader(b)); err != nil {
 		app.badRequestResponse(w, r, fmt.Errorf("image is not a valid JPEG or PNG"))
 		return
 	}
@@ -73,14 +74,17 @@ func (app *application) createImageHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	img := &data.Image{OriginalFilename: filepath.Base(header.Filename), StoredFilename: stored, MediaType: media, SizeBytes: int64(len(b))}
-	err = app.models.Images.Insert(img)
+	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+	defer cancel()
+	job, err := app.models.Jobs.Accept(ctx, img)
 	if err != nil {
 		// Do not leave an untracked file behind when the database insert fails.
 		_ = os.Remove(path)
 		app.serverErrorResponse(w, r, err)
 		return
 	}
-	if err = app.writeJSON(w, http.StatusCreated, envelope{"image": img, "message": "original image stored; queued jobs are added in Phase 2"}, nil); err != nil {
+	statusURL := fmt.Sprintf("/v1/jobs/%d", job.ID)
+	if err = app.writeJSON(w, http.StatusAccepted, envelope{"image_id": img.ID, "job_id": job.ID, "status": job.Status, "status_url": statusURL}, http.Header{"Location": []string{statusURL}}); err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
 }
