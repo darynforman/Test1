@@ -70,11 +70,14 @@ func main() {
 		models: data.NewModels(db),
 	}
 
+	// Start one background worker for the whole application, not one per upload.
+	// Its context lets us tell it to stop when the HTTP server shuts down.
 	workerCtx, stopWorker := context.WithCancel(context.Background())
 	workerDone := make(chan struct{})
 	go func() { defer close(workerDone); app.runWorker(workerCtx) }()
 	err = app.serve()
 	stopWorker()
+	// Wait for the worker to finish stopping before closing the database.
 	<-workerDone
 	if err != nil {
 		logger.Error(err.Error())

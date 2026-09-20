@@ -74,6 +74,7 @@ func (app *application) createImageHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	img := &data.Image{OriginalFilename: filepath.Base(header.Filename), StoredFilename: stored, MediaType: media, SizeBytes: int64(len(b))}
+	// Give the database up to five seconds to save the image and its queued job.
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 	job, err := app.models.Jobs.Accept(ctx, img)
@@ -83,6 +84,8 @@ func (app *application) createImageHandler(w http.ResponseWriter, r *http.Reques
 		app.serverErrorResponse(w, r, err)
 		return
 	}
+	// 202 means the work is saved and accepted, not that the variants are finished.
+	// Location and status_url tell the browser where to check this job.
 	statusURL := fmt.Sprintf("/v1/jobs/%d", job.ID)
 	if err = app.writeJSON(w, http.StatusAccepted, envelope{"image_id": img.ID, "job_id": job.ID, "status": job.Status, "status_url": statusURL}, http.Header{"Location": []string{statusURL}}); err != nil {
 		app.serverErrorResponse(w, r, err)

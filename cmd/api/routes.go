@@ -7,6 +7,7 @@ func (app *application) routes() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /v1/healthcheck", app.healthcheckHandler)
 	mux.HandleFunc("POST /v1/images", app.createImageHandler)
+	// These routes let the browser read job progress and open finished images.
 	mux.HandleFunc("GET /v1/jobs/{job_id}", app.showJobHandler)
 	mux.HandleFunc("GET /v1/images/{image_id}/variants/{name}", app.showVariantHandler)
 	// Serve the browser's CSS and JavaScript from web/assets.

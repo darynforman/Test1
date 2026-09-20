@@ -27,10 +27,18 @@ function clearSelection(){
 function choose(file){
 	errorBox.textContent='';
 	if(!file)return;
-	if(!['image/jpeg','image/png'].includes(file.type)||file.size>10*1024*1024){
+	// Explain a wrong file type separately from an image that is too large.
+	if(!['image/jpeg','image/png'].includes(file.type)){
 		clearSelection();
 		fileInput.value='';
-		errorBox.textContent='Choose a JPEG or PNG image no larger than 10 MB.';
+		errorBox.textContent='Unsupported file type. Please choose a JPEG or PNG image.';
+		return;
+	}
+	// File sizes are in bytes; this is the 10 MB limit. The server checks it too.
+	if(file.size>10*1024*1024){
+		clearSelection();
+		fileInput.value='';
+		errorBox.textContent='This image is too large. Please choose an image no larger than 10 MB.';
 		return;
 	}
 	chosenFile=file;
@@ -69,6 +77,7 @@ processButton.addEventListener('click',async()=>{
 		let data={};
 		try{data=responseText?JSON.parse(responseText):{};}catch{throw new Error('The upload API returned an invalid response. Start and open the Go application on port 4000.');}
 		if(!responseText)throw new Error('The upload API is unavailable. Start and open the Go application on port 4000.');
+		// Expect acceptance, not completion; the background worker still handles the job.
 		if(response.status!==202)throw new Error(data.error||'Upload was rejected.');
 		document.querySelector('#jobTitle').textContent='Upload accepted';
 		document.querySelector('#jobText').textContent=`Job #${data.job_id}: ${data.status}. Status resource: ${data.status_url}`;

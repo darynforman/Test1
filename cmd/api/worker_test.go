@@ -21,6 +21,7 @@ import (
 	"time"
 )
 
+// Check landscape, portrait, and small images, plus the thumbnail center crop.
 func TestVariantDimensions(t *testing.T) {
 	for _, tc := range []struct{ w, h, pw, ph, dw, dh int }{{1800, 1200, 800, 533, 1200, 800}, {1200, 1800, 400, 600, 600, 900}, {80, 40, 80, 40, 80, 40}} {
 		src := image.NewRGBA(image.Rect(0, 0, tc.w, tc.h))
@@ -48,6 +49,8 @@ func TestVariantDimensions(t *testing.T) {
 }
 
 // Uses a disposable schema, so it never modifies existing application tables.
+// Exercise the upload, database, worker, and output endpoints together.
+// A missing test original later checks that processing errors produce failed status.
 func TestWeek2Integration(t *testing.T) {
 	dsn := os.Getenv("IMAGELAB_TEST_DSN")
 	if dsn == "" {

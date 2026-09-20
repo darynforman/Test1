@@ -4,6 +4,7 @@ import "database/sql"
 
 type Models struct {
 	Images ImageModel
+	// Jobs gives the handlers and worker access to the job database functions.
 	Jobs   JobModel
 }
 
