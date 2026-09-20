@@ -86,7 +86,7 @@ func (app *application) createImageHandler(w http.ResponseWriter, r *http.Reques
 	}
 	// 202 means the work is saved and accepted, not that the variants are finished.
 	// Location and status_url tell the browser where to check this job.
-	statusURL := fmt.Sprintf("/v1/jobs/%d", job.ID)
+	statusURL := fmt.Sprintf("/v1/jobs/%s", job.ID)
 	if err = app.writeJSON(w, http.StatusAccepted, envelope{"image_id": img.ID, "job_id": job.ID, "status": job.Status, "status_url": statusURL}, http.Header{"Location": []string{statusURL}}); err != nil {
 		app.serverErrorResponse(w, r, err)
 	}

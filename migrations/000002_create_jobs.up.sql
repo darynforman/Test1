@@ -1,6 +1,6 @@
 CREATE TABLE jobs (
- id BIGSERIAL PRIMARY KEY,
- image_id BIGINT NOT NULL REFERENCES images(id) ON DELETE CASCADE,
+ id UUID PRIMARY KEY DEFAULT uuidv7(),
+ image_id UUID NOT NULL REFERENCES images(id) ON DELETE CASCADE,
  status TEXT NOT NULL DEFAULT 'queued' CHECK (status IN ('queued','processing','completed','failed')),
  error_message TEXT,
  queued_at TIMESTAMPTZ NOT NULL DEFAULT now(),

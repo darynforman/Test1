@@ -4,14 +4,15 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/google/uuid"
 	"time"
 )
 
 // Job holds progress information read from PostgreSQL.
 // Pointer fields can be nil when an event, such as completion, has not happened yet.
 type Job struct {
-	ID          int64      `json:"id"`
-	ImageID     int64      `json:"image_id"`
+	ID          uuid.UUID  `json:"id"`
+	ImageID     uuid.UUID  `json:"image_id"`
 	Status      string     `json:"status"`
 	Error       *string    `json:"error,omitempty"`
 	QueuedAt    time.Time  `json:"queued_at"`
@@ -20,16 +21,17 @@ type Job struct {
 	FailedAt    *time.Time `json:"failed_at"`
 	Variants    []Variant  `json:"variants,omitempty"`
 }
+
 // Variant describes one generated image. json:"-" keeps internal fields out of JSON.
 type Variant struct {
-	ID             int64  `json:"-"`
-	ImageID        int64  `json:"-"`
-	Name           string `json:"name"`
-	StoredFilename string `json:"-"`
-	Width          int    `json:"width"`
-	Height         int    `json:"height"`
-	SizeBytes      int64  `json:"size_bytes"`
-	URL            string `json:"url"`
+	ID             uuid.UUID `json:"-"`
+	ImageID        uuid.UUID `json:"-"`
+	Name           string    `json:"name"`
+	StoredFilename string    `json:"-"`
+	Width          int       `json:"width"`
+	Height         int       `json:"height"`
+	SizeBytes      int64     `json:"size_bytes"`
+	URL            string    `json:"url"`
 }
 type JobModel struct{ DB *sql.DB }
 
@@ -57,8 +59,9 @@ func (m JobModel) Accept(ctx context.Context, img *Image) (*Job, error) {
 	}
 	return j, nil
 }
+
 // Read the current state immediately; do not wait here for processing to finish.
-func (m JobModel) Get(ctx context.Context, id int64) (*Job, error) {
+func (m JobModel) Get(ctx context.Context, id uuid.UUID) (*Job, error) {
 	j := new(Job)
 	err := m.DB.QueryRowContext(ctx, `SELECT id,image_id,status,error_message,queued_at,started_at,completed_at,failed_at FROM jobs WHERE id=$1`, id).Scan(&j.ID, &j.ImageID, &j.Status, &j.Error, &j.QueuedAt, &j.StartedAt, &j.CompletedAt, &j.FailedAt)
 	if err != nil {
@@ -76,7 +79,7 @@ func (m JobModel) Get(ctx context.Context, id int64) (*Job, error) {
 			if err = rows.Scan(&v.Name, &v.Width, &v.Height, &v.SizeBytes); err != nil {
 				return nil, err
 			}
-			v.URL = fmt.Sprintf("/v1/images/%d/variants/%s", j.ImageID, v.Name)
+			v.URL = fmt.Sprintf("/v1/images/%s/variants/%s", j.ImageID, v.Name)
 			j.Variants = append(j.Variants, v)
 		}
 		if err = rows.Err(); err != nil {
@@ -95,6 +98,7 @@ func (m JobModel) Claim(ctx context.Context) (*Job, string, error) {
 	err := m.DB.QueryRowContext(ctx, `WITH next AS (SELECT id FROM jobs WHERE status='queued' ORDER BY queued_at,id FOR UPDATE SKIP LOCKED LIMIT 1), claimed AS (UPDATE jobs SET status='processing',started_at=clock_timestamp() FROM next WHERE jobs.id=next.id RETURNING jobs.id,jobs.image_id) SELECT claimed.id,claimed.image_id,images.stored_filename FROM claimed JOIN images ON images.id=claimed.image_id`).Scan(&j.ID, &j.ImageID, &stored)
 	return j, stored, err
 }
+
 // The worker calls this after writing all three files.
 // Save their metadata and completed status together so partial results are not published.
 func (m JobModel) Complete(ctx context.Context, j *Job, variants []Variant) error {
@@ -125,13 +129,15 @@ func (m JobModel) Complete(ctx context.Context, j *Job, variants []Variant) erro
 	}
 	return tx.Commit()
 }
+
 // Save a simple error for the user; detailed technical errors stay in the server log.
-func (m JobModel) Fail(ctx context.Context, id int64) error {
+func (m JobModel) Fail(ctx context.Context, id uuid.UUID) error {
 	_, err := m.DB.ExecContext(ctx, `UPDATE jobs SET status='failed',failed_at=clock_timestamp(),error_message='Image processing could not finish. Please submit the image again.' WHERE id=$1 AND status='processing'`, id)
 	return err
 }
+
 // Find only a known output belonging to a completed job.
-func (m JobModel) Variant(ctx context.Context, imageID int64, name string) (string, error) {
+func (m JobModel) Variant(ctx context.Context, imageID uuid.UUID, name string) (string, error) {
 	var stored string
 	err := m.DB.QueryRowContext(ctx, `SELECT v.stored_filename FROM variants v WHERE v.image_id=$1 AND v.name=$2 AND EXISTS (SELECT 1 FROM jobs j WHERE j.image_id=v.image_id AND j.status='completed')`, imageID, name).Scan(&stored)
 	return stored, err

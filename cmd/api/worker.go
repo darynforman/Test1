@@ -100,7 +100,7 @@ func (app *application) processJob(ctx context.Context, job *data.Job, stored st
 		}
 		out := resizeVariant(src, profile.w, profile.h, profile.crop)
 		// Use the job ID and variant name to choose the output filename on the server.
-		name := fmt.Sprintf("%d_%s.jpg", job.ID, profile.name)
+		name := fmt.Sprintf("%s_%s.jpg", job.ID, profile.name)
 		path := filepath.Join(dir, name)
 		paths = append(paths, path)
 		dst, e := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0640)

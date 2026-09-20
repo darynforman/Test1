@@ -3,11 +3,12 @@ package data
 import (
 	"context"
 	"database/sql"
+	"github.com/google/uuid"
 	"time"
 )
 
 type Image struct {
-	ID               int64     `json:"id"`
+	ID               uuid.UUID `json:"id"`
 	OriginalFilename string    `json:"original_filename"`
 	StoredFilename   string    `json:"-"`
 	MediaType        string    `json:"media_type"`

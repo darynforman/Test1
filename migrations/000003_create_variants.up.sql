@@ -1,6 +1,6 @@
 CREATE TABLE variants (
- id BIGSERIAL PRIMARY KEY,
- image_id BIGINT NOT NULL REFERENCES images(id) ON DELETE CASCADE,
+ id UUID PRIMARY KEY DEFAULT uuidv7(),
+ image_id UUID NOT NULL REFERENCES images(id) ON DELETE CASCADE,
  name TEXT NOT NULL CHECK (name IN ('thumbnail','preview','display')),
  stored_filename TEXT NOT NULL UNIQUE,
  width INTEGER NOT NULL CHECK (width>0), height INTEGER NOT NULL CHECK (height>0),

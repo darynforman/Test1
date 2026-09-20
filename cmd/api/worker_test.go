@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"github.com/google/uuid"
 	"image"
 	"image/color"
 	"image/png"
@@ -113,9 +114,9 @@ func TestWeek2Integration(t *testing.T) {
 		t.Fatalf("upload: %d %s", w.Code, w.Body.String())
 	}
 	var accepted struct {
-		JobID     int64  `json:"job_id"`
-		StatusURL string `json:"status_url"`
-		Status    string `json:"status"`
+		JobID     uuid.UUID `json:"job_id"`
+		StatusURL string    `json:"status_url"`
+		Status    string    `json:"status"`
 	}
 	if err = json.Unmarshal(w.Body.Bytes(), &accepted); err != nil {
 		t.Fatal(err)
@@ -128,11 +129,14 @@ func TestWeek2Integration(t *testing.T) {
 	if err != nil || j.Status != "queued" {
 		t.Fatalf("durable queued job: %v %v", j, err)
 	}
+	if j.ID.Version() != 7 || j.ImageID.Version() != 7 {
+		t.Fatal("image and job IDs must be UUID v7")
+	}
 	workerCtx, cancel := context.WithCancel(ctx)
 	done := make(chan struct{})
 	go func() { defer close(done); app.runWorker(workerCtx) }()
 	defer func() { cancel(); <-done }()
-	await := func(id int64, want string) *data.Job {
+	await := func(id uuid.UUID, want string) *data.Job {
 		t.Helper()
 		deadline := time.Now().Add(10 * time.Second)
 		for time.Now().Before(deadline) {
@@ -145,13 +149,17 @@ func TestWeek2Integration(t *testing.T) {
 			}
 			time.Sleep(10 * time.Millisecond)
 		}
-		t.Fatalf("job %d did not reach %s", id, want)
+		t.Fatalf("job %s did not reach %s", id, want)
 		return nil
 	}
 	await(j.ID, "processing")
 	j = await(j.ID, "completed")
 	if len(j.Variants) != 3 || j.StartedAt == nil || j.CompletedAt == nil || j.CompletedAt.Before(*j.StartedAt) {
 		t.Fatalf("invalid completed job: %+v", j)
+	}
+	var variantID uuid.UUID
+	if err = db.QueryRow("SELECT id FROM variants LIMIT 1").Scan(&variantID); err != nil || variantID.Version() != 7 {
+		t.Fatalf("expected UUID v7 variant ID: %s, %v", variantID, err)
 	}
 	for _, v := range j.Variants {
 		w := httptest.NewRecorder()
@@ -195,5 +203,18 @@ func TestWeek2Integration(t *testing.T) {
 	var count int
 	if err = db.QueryRow("SELECT count(*) FROM images").Scan(&count); err != nil || count != 2 {
 		t.Fatalf("rejected input created metadata: %d %v", count, err)
+	}
+}
+
+func TestInvalidUUIDRoutes(t *testing.T) {
+	app := &application{}
+	for _, id := range []string{"1", "not-a-uuid", uuid.Nil.String()} {
+		for _, path := range []string{"/v1/jobs/" + id, "/v1/images/" + id + "/variants/thumbnail"} {
+			w := httptest.NewRecorder()
+			app.routes().ServeHTTP(w, httptest.NewRequest("GET", path, nil))
+			if w.Code != http.StatusNotFound {
+				t.Fatalf("%s: got %d", path, w.Code)
+			}
+		}
 	}
 }

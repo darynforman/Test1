@@ -3,15 +3,15 @@ package main
 import (
 	"database/sql"
 	"errors"
+	"github.com/google/uuid"
 	"net/http"
 	"path/filepath"
-	"strconv"
 )
 
 // Return the job status and timestamps so the client can check its progress.
 func (app *application) showJobHandler(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.ParseInt(r.PathValue("job_id"), 10, 64)
-	if err != nil || id < 1 {
+	id, err := uuid.Parse(r.PathValue("job_id"))
+	if err != nil || id == uuid.Nil {
 		app.notFoundResponse(w, r)
 		return
 	}
@@ -30,11 +30,12 @@ func (app *application) showJobHandler(w http.ResponseWriter, r *http.Request) {
 		app.logger.Error("write job response", "error", err)
 	}
 }
+
 // Serve a generated image using its image ID and one of the three allowed names.
 func (app *application) showVariantHandler(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.ParseInt(r.PathValue("image_id"), 10, 64)
+	id, err := uuid.Parse(r.PathValue("image_id"))
 	name := r.PathValue("name")
-	if err != nil || id < 1 || (name != "thumbnail" && name != "preview" && name != "display") {
+	if err != nil || id == uuid.Nil || (name != "thumbnail" && name != "preview" && name != "display") {
 		app.notFoundResponse(w, r)
 		return
 	}
