@@ -131,3 +131,30 @@ button { font: 600 12px "DM Sans", sans-serif; cursor: pointer; transition: .18s
   #selected { flex-direction: column; align-items: stretch; }
   #selected img { width: 100%; }
 }
+
+.job-card { min-height: 250px; }
+.job-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+#jobText { color: var(--muted); overflow-wrap: anywhere; font-size: 12px; }
+.status-badge { padding: 4px 10px; border-radius: 20px; background: var(--surface-soft); font-size: 12px; text-transform: capitalize; }
+.status-badge[data-status="processing"] { background: #fff0ce; color: #71520c; }
+.status-badge[data-status="completed"] { background: #e2efe9; color: var(--forest-dark); }
+.status-badge[data-status="failed"] { background: #fbe3de; color: #9c3024; }
+.timeline { padding: 0; list-style: none; }
+.timeline li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.timeline li span { font-size: 12px; color: var(--muted); }
+.timeline li[data-state="done"] span { color: var(--forest); }
+.timeline li[data-state="failed"] span, .job-error { color: #9c3024; }
+.timestamps { font-size: 12px; }
+.timestamps > div { display: flex; justify-content: space-between; gap: 10px; margin: 6px 0; }
+.timestamps dt { color: var(--muted); }
+.timestamps dd { margin: 0; text-align: right; }
+#pollingIndicator { color: var(--forest-dark); font-size: 12px; }
+.retrieval-error { padding: 14px; border: 1px solid #d9b976; border-radius: 10px; background: #fff6df; }
+.retrieval-error p { margin: 5px 0; }
+.variant-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.variant-card { min-width: 0; margin: 0; padding: 14px; border: 1px solid var(--line); border-radius: 12px; }
+.variant-card img { display: block; width: 100%; height: 180px; object-fit: contain; background: var(--surface-soft); border-radius: 8px; }
+.variant-card h3 { text-transform: capitalize; margin: 12px 0 4px; }
+.variant-card p { color: var(--muted); }
+.variant-card a { display: inline-block; margin-right: 14px; color: var(--forest-dark); }
+@media (max-width: 760px) { .variant-grid { grid-template-columns: 1fr; } }
