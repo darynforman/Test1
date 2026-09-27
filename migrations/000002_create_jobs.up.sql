@@ -1,5 +1,6 @@
 CREATE TABLE jobs (
  id UUID PRIMARY KEY DEFAULT uuidv7(),
+ public_id UUID NOT NULL UNIQUE DEFAULT uuidv4(),
  image_id UUID NOT NULL REFERENCES images(id) ON DELETE CASCADE,
  status TEXT NOT NULL DEFAULT 'queued' CHECK (status IN ('queued','processing','completed','failed')),
  error_message TEXT,

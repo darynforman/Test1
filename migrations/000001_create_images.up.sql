@@ -1,5 +1,6 @@
 CREATE TABLE images (
  id UUID PRIMARY KEY DEFAULT uuidv7(),
+ public_id UUID NOT NULL UNIQUE DEFAULT uuidv4(),
  original_filename TEXT NOT NULL,
  stored_filename TEXT NOT NULL UNIQUE,
  media_type TEXT NOT NULL CHECK (media_type IN ('image/jpeg','image/png')),

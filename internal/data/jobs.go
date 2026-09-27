@@ -11,15 +11,17 @@ import (
 // Job holds progress information read from PostgreSQL.
 // Pointer fields can be nil when an event, such as completion, has not happened yet.
 type Job struct {
-	ID          uuid.UUID  `json:"id"`
-	ImageID     uuid.UUID  `json:"image_id"`
-	Status      string     `json:"status"`
-	Error       *string    `json:"error,omitempty"`
-	QueuedAt    time.Time  `json:"queued_at"`
-	StartedAt   *time.Time `json:"started_at"`
-	CompletedAt *time.Time `json:"completed_at"`
-	FailedAt    *time.Time `json:"failed_at"`
-	Variants    []Variant  `json:"variants,omitempty"`
+	ID            uuid.UUID  `json:"-"`
+	PublicID      uuid.UUID  `json:"id"`
+	ImageID       uuid.UUID  `json:"-"`
+	ImagePublicID uuid.UUID  `json:"image_id"`
+	Status        string     `json:"status"`
+	Error         *string    `json:"error,omitempty"`
+	QueuedAt      time.Time  `json:"queued_at"`
+	StartedAt     *time.Time `json:"started_at"`
+	CompletedAt   *time.Time `json:"completed_at"`
+	FailedAt      *time.Time `json:"failed_at"`
+	Variants      []Variant  `json:"variants,omitempty"`
 }
 
 // Variant describes one generated image. json:"-" keeps internal fields out of JSON.
@@ -44,12 +46,12 @@ func (m JobModel) Accept(ctx context.Context, img *Image) (*Job, error) {
 	// Undo unfinished changes if we return early. After Commit, this does nothing.
 	defer tx.Rollback()
 	// Save the image first so the job can refer to its database-generated ID.
-	err = tx.QueryRowContext(ctx, `INSERT INTO images (original_filename,stored_filename,media_type,size_bytes) VALUES ($1,$2,$3,$4) RETURNING id,created_at`, img.OriginalFilename, img.StoredFilename, img.MediaType, img.SizeBytes).Scan(&img.ID, &img.CreatedAt)
+	err = tx.QueryRowContext(ctx, `INSERT INTO images (original_filename,stored_filename,media_type,size_bytes) VALUES ($1,$2,$3,$4) RETURNING id,public_id,created_at`, img.OriginalFilename, img.StoredFilename, img.MediaType, img.SizeBytes).Scan(&img.ID, &img.PublicID, &img.CreatedAt)
 	if err != nil {
 		return nil, err
 	}
-	j := &Job{ImageID: img.ID, Status: "queued"}
-	err = tx.QueryRowContext(ctx, `INSERT INTO jobs (image_id) VALUES ($1) RETURNING id,queued_at`, img.ID).Scan(&j.ID, &j.QueuedAt)
+	j := &Job{ImageID: img.ID, ImagePublicID: img.PublicID, Status: "queued"}
+	err = tx.QueryRowContext(ctx, `INSERT INTO jobs (image_id) VALUES ($1) RETURNING id,public_id,queued_at`, img.ID).Scan(&j.ID, &j.PublicID, &j.QueuedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +62,11 @@ func (m JobModel) Accept(ctx context.Context, img *Image) (*Job, error) {
 	return j, nil
 }
 
+// Look up the public v4 ID; internal IDs remain available for database work.
 // Read the current state immediately; do not wait here for processing to finish.
-func (m JobModel) Get(ctx context.Context, id uuid.UUID) (*Job, error) {
+func (m JobModel) Get(ctx context.Context, publicID uuid.UUID) (*Job, error) {
 	j := new(Job)
-	err := m.DB.QueryRowContext(ctx, `SELECT id,image_id,status,error_message,queued_at,started_at,completed_at,failed_at FROM jobs WHERE id=$1`, id).Scan(&j.ID, &j.ImageID, &j.Status, &j.Error, &j.QueuedAt, &j.StartedAt, &j.CompletedAt, &j.FailedAt)
+	err := m.DB.QueryRowContext(ctx, `SELECT j.id,j.public_id,j.image_id,i.public_id,j.status,j.error_message,j.queued_at,j.started_at,j.completed_at,j.failed_at FROM jobs j JOIN images i ON i.id=j.image_id WHERE j.public_id=$1`, publicID).Scan(&j.ID, &j.PublicID, &j.ImageID, &j.ImagePublicID, &j.Status, &j.Error, &j.QueuedAt, &j.StartedAt, &j.CompletedAt, &j.FailedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +82,7 @@ func (m JobModel) Get(ctx context.Context, id uuid.UUID) (*Job, error) {
 			if err = rows.Scan(&v.Name, &v.Width, &v.Height, &v.SizeBytes); err != nil {
 				return nil, err
 			}
-			v.URL = fmt.Sprintf("/v1/images/%s/variants/%s", j.ImageID, v.Name)
+			v.URL = fmt.Sprintf("/v1/images/%s/variants/%s", j.ImagePublicID, v.Name)
 			j.Variants = append(j.Variants, v)
 		}
 		if err = rows.Err(); err != nil {
@@ -137,8 +140,8 @@ func (m JobModel) Fail(ctx context.Context, id uuid.UUID) error {
 }
 
 // Find only a known output belonging to a completed job.
-func (m JobModel) Variant(ctx context.Context, imageID uuid.UUID, name string) (string, error) {
+func (m JobModel) Variant(ctx context.Context, imagePublicID uuid.UUID, name string) (string, error) {
 	var stored string
-	err := m.DB.QueryRowContext(ctx, `SELECT v.stored_filename FROM variants v WHERE v.image_id=$1 AND v.name=$2 AND EXISTS (SELECT 1 FROM jobs j WHERE j.image_id=v.image_id AND j.status='completed')`, imageID, name).Scan(&stored)
+	err := m.DB.QueryRowContext(ctx, `SELECT v.stored_filename FROM variants v JOIN images i ON i.id=v.image_id WHERE i.public_id=$1 AND v.name=$2 AND EXISTS (SELECT 1 FROM jobs j WHERE j.image_id=v.image_id AND j.status='completed')`, imagePublicID, name).Scan(&stored)
 	return stored, err
 }

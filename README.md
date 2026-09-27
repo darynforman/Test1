@@ -53,7 +53,7 @@ The integration test verifies upload rejection, durable acceptance, queued → p
 ```bash
 curl -i -F 'image=@/path/to/photo.png' http://localhost:4000/v1/images
 # Use the status_url returned by the POST:
-curl http://localhost:4000/v1/jobs/1
+curl http://localhost:4000/v1/jobs/PUBLIC_JOB_UUID
 psql "$IMAGELAB_DB_DSN" -c 'SELECT id,image_id,status,queued_at,started_at,completed_at,failed_at,error_message FROM jobs ORDER BY id;'
 ```
 
@@ -74,3 +74,23 @@ The earlier measurement lab is used as the Go/PostgreSQL structural base because
 Each table has its own up/down migration: `000001` images, `000002` jobs, and `000003` variants. Apply up migrations in that order; roll back in reverse order because jobs and variants reference images. Down migrations delete the corresponding data.
 
 If your Week 1 database already has all three tables from `000001_create_imagelab.up.sql`, **do not rerun these create-table migrations**. The schema is unchanged, so continue using that database. The setup loop above is for a fresh database. If you use a migration tracking tool, reconcile its recorded version with the three existing tables before running further migrations.
+
+## Internal and public IDs
+
+Images and jobs have an internal UUID v7 primary key (`id`) and a unique public
+UUID v4 (`public_id`). Foreign keys and worker updates use internal IDs. API
+responses (`id`, `job_id`, and `image_id`) and URLs use public IDs. Variants need
+only internal IDs because public requests identify them by image public ID and name.
+The original create-table migrations include both columns for fresh databases.
+Existing installations without public IDs must apply the following once before
+running this version (do not rerun the create-table migrations):
+
+```sql
+BEGIN;
+ALTER TABLE images ADD COLUMN public_id UUID NOT NULL UNIQUE DEFAULT uuidv4();
+ALTER TABLE jobs ADD COLUMN public_id UUID NOT NULL UNIQUE DEFAULT uuidv4();
+COMMIT;
+```
+
+Existing records receive public IDs automatically; previously issued internal-ID
+URLs must be replaced with the new public URLs.

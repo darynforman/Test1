@@ -114,6 +114,7 @@ func TestWeek2Integration(t *testing.T) {
 		t.Fatalf("upload: %d %s", w.Code, w.Body.String())
 	}
 	var accepted struct {
+		ImageID   uuid.UUID `json:"image_id"`
 		JobID     uuid.UUID `json:"job_id"`
 		StatusURL string    `json:"status_url"`
 		Status    string    `json:"status"`
@@ -131,6 +132,20 @@ func TestWeek2Integration(t *testing.T) {
 	}
 	if j.ID.Version() != 7 || j.ImageID.Version() != 7 {
 		t.Fatal("image and job IDs must be UUID v7")
+	}
+	if accepted.JobID.Version() != 4 || accepted.ImageID.Version() != 4 || accepted.JobID != j.PublicID || accepted.ImageID != j.ImagePublicID {
+		t.Fatal("API must return public UUID v4 IDs")
+	}
+	if accepted.StatusURL != "/v1/jobs/"+j.PublicID.String() {
+		t.Fatal("status URL must use public ID")
+	}
+	// Internal IDs must not resolve through public API endpoints.
+	for _, path := range []string{"/v1/jobs/" + j.ID.String(), "/v1/images/" + j.ImageID.String() + "/variants/thumbnail"} {
+		response := httptest.NewRecorder()
+		app.routes().ServeHTTP(response, httptest.NewRequest("GET", path, nil))
+		if response.Code != http.StatusNotFound {
+			t.Fatalf("internal ID resolved: %s", path)
+		}
 	}
 	workerCtx, cancel := context.WithCancel(ctx)
 	done := make(chan struct{})
@@ -152,8 +167,8 @@ func TestWeek2Integration(t *testing.T) {
 		t.Fatalf("job %s did not reach %s", id, want)
 		return nil
 	}
-	await(j.ID, "processing")
-	j = await(j.ID, "completed")
+	await(j.PublicID, "processing")
+	j = await(j.PublicID, "completed")
 	if len(j.Variants) != 3 || j.StartedAt == nil || j.CompletedAt == nil || j.CompletedAt.Before(*j.StartedAt) {
 		t.Fatalf("invalid completed job: %+v", j)
 	}
@@ -162,6 +177,9 @@ func TestWeek2Integration(t *testing.T) {
 		t.Fatalf("expected UUID v7 variant ID: %s, %v", variantID, err)
 	}
 	for _, v := range j.Variants {
+		if v.URL != fmt.Sprintf("/v1/images/%s/variants/%s", j.ImagePublicID, v.Name) {
+			t.Fatal("variant URL must use public image ID")
+		}
 		w := httptest.NewRecorder()
 		app.routes().ServeHTTP(w, httptest.NewRequest("GET", v.URL, nil))
 		if w.Code != http.StatusOK {
@@ -177,6 +195,16 @@ func TestWeek2Integration(t *testing.T) {
 	if w.Code != 200 {
 		t.Fatal("job endpoint")
 	}
+	var statusResponse struct {
+		ID      uuid.UUID `json:"id"`
+		ImageID uuid.UUID `json:"image_id"`
+	}
+	if err := json.Unmarshal(w.Body.Bytes(), &statusResponse); err != nil {
+		t.Fatal(err)
+	}
+	if statusResponse.ID != j.PublicID || statusResponse.ImageID != j.ImagePublicID {
+		t.Fatal("status response exposed internal IDs")
+	}
 	// Stop observation-independent worker, accept another job, and remove only its input.
 	cancel()
 	<-done
@@ -186,7 +214,7 @@ func TestWeek2Integration(t *testing.T) {
 	}
 	json.Unmarshal(w.Body.Bytes(), &accepted)
 	var stored string
-	if err = db.QueryRow(`SELECT stored_filename FROM images JOIN jobs ON images.id=jobs.image_id WHERE jobs.id=$1`, accepted.JobID).Scan(&stored); err != nil {
+	if err = db.QueryRow(`SELECT stored_filename FROM images JOIN jobs ON images.id=jobs.image_id WHERE jobs.public_id=$1`, accepted.JobID).Scan(&stored); err != nil {
 		t.Fatal(err)
 	}
 	if err = os.Remove(filepath.Join(app.config.storageDir, "originals", stored)); err != nil {

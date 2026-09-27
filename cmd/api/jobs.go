@@ -26,7 +26,7 @@ func (app *application) showJobHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	// Ask the browser to fetch fresh status instead of reusing an older response.
 	w.Header().Set("Cache-Control", "no-store")
-	if err = app.writeJSON(w, http.StatusOK, envelope{"id": job.ID, "image_id": job.ImageID, "status": job.Status, "error": job.Error, "queued_at": job.QueuedAt, "started_at": job.StartedAt, "completed_at": job.CompletedAt, "failed_at": job.FailedAt, "variants": job.Variants}, nil); err != nil {
+	if err = app.writeJSON(w, http.StatusOK, envelope{"id": job.PublicID, "image_id": job.ImagePublicID, "status": job.Status, "error": job.Error, "queued_at": job.QueuedAt, "started_at": job.StartedAt, "completed_at": job.CompletedAt, "failed_at": job.FailedAt, "variants": job.Variants}, nil); err != nil {
 		app.logger.Error("write job response", "error", err)
 	}
 }
