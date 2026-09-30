@@ -105,11 +105,48 @@ func TestWeek2Integration(t *testing.T) {
 		app.routes().ServeHTTP(w, r)
 		return w
 	}
-	w := submit([]byte("not an image"))
-	if w.Code != 400 {
-		t.Fatalf("invalid upload: %d", w.Code)
+	// Invalid uploads must leave neither database records nor original files.
+	for _, tc := range []struct {
+		name    string
+		payload []byte
+		missing bool
+	}{
+		{name: "empty"},
+		{name: "unsupported", payload: []byte("not an image")},
+		{name: "corrupt_png", payload: encoded.Bytes()[:40]},
+		{name: "oversized", payload: make([]byte, maxImageBytes+1)},
+		{name: "missing", missing: true},
+	} {
+		if !t.Run(tc.name, func(t *testing.T) {
+			var rejected *httptest.ResponseRecorder
+			if tc.missing {
+				rejected = httptest.NewRecorder()
+				app.routes().ServeHTTP(rejected, httptest.NewRequest("POST", "/v1/images", nil))
+			} else {
+				rejected = submit(tc.payload)
+			}
+			if rejected.Code != http.StatusBadRequest {
+				t.Fatalf("expected 400, got %d: %s", rejected.Code, rejected.Body.String())
+			}
+			var images, jobs int
+			if err := db.QueryRow("SELECT (SELECT count(*) FROM images),(SELECT count(*) FROM jobs)").Scan(&images, &jobs); err != nil {
+				t.Fatal(err)
+			}
+			if images != 0 || jobs != 0 {
+				t.Fatalf("rejection created records: images=%d jobs=%d", images, jobs)
+			}
+			files, err := os.ReadDir(filepath.Join(app.config.storageDir, "originals"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if len(files) != 0 {
+				t.Fatal("rejection left stored originals")
+			}
+		}) {
+			t.FailNow()
+		}
 	}
-	w = submit(encoded.Bytes())
+	w := submit(encoded.Bytes())
 	if w.Code != 202 {
 		t.Fatalf("upload: %d %s", w.Code, w.Body.String())
 	}

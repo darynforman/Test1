@@ -6,10 +6,10 @@ IMAGELAB_DB_DSN ?= host=/var/run/postgresql dbname=$(DB_NAME) user=$(DB_USER) ss
 PORT ?= 4000
 WORKER_DELAY ?= 0s
 NODE ?= node
-export IMAGELAB_DB_DSN
+export IMAGELAB_DB_DSN IMAGELAB_TEST_DSN
 export PORT WORKER_DELAY DB_NAME
 
-.PHONY: help run db-create db-shell db-tables db-failures db-init check-dsn test test-ui test-failure vet
+.PHONY: help run db-create db-shell db-tables db-failures db-init check-dsn test test-go test-ui test-integration test-all test-failure vet
 
 help:
 	@printf '%s\n' \
@@ -19,7 +19,10 @@ help:
 	  'make db-tables  List database tables' \
 	  'make db-failures Show failed jobs and their failure timestamps' \
 	  'make db-init    Apply all migrations to a FRESH database only' \
-	  'make test       Run Go tests' \
+	  'make test       Run Go and frontend tests (no database required)' \
+	  'make test-go    Run Go tests without database integration' \
+	  'make test-integration Run PostgreSQL tests (set IMAGELAB_TEST_DSN)' \
+	  'make test-all   Run Go, frontend, and PostgreSQL tests' \
 	  'make test-ui    Test browser polling and error recovery (requires Node.js 18+)' \
 	  'make test-failure Create a missing-file job and check it fails (app must be running)' \
 	  'make vet        Run Go static checks' \
@@ -58,8 +61,18 @@ db-init: check-dsn
 	done; \
 	psql "$$IMAGELAB_DB_DSN" -X -v ON_ERROR_STOP=1 --single-transaction "$$@"
 
-test:
-	go test ./...
+# Routine tests never connect to PostgreSQL, even if a test DSN is exported.
+test: test-go test-ui
+
+test-go:
+	IMAGELAB_TEST_DSN= go test ./...
+
+# Fail clearly rather than silently skipping the requested database checks.
+test-integration:
+	@test -n "$$IMAGELAB_TEST_DSN" || { echo 'Set IMAGELAB_TEST_DSN to a PostgreSQL database where your role can create schemas.' >&2; exit 1; }
+	go test ./cmd/api -run '^TestWeek2Integration$$' -count=1 -v
+
+test-all: test test-integration
 
 test-ui:
 	$(NODE) web/tests/app.test.cjs

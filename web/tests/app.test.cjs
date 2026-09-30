@@ -166,3 +166,11 @@ test('a page closed during upload never starts polling after acceptance',async()
  resolve(h.reply({job_id:'job-a',image_id:'image-a',status:'queued',status_url:'/v1/jobs/job-a'},202));await pending;
  assert.equal(h.timers.size,0);assert.equal(h.requests.length,1);
 });
+
+// Check both the initial button markup and the handler's no-file guard.
+test('no selected image cannot submit; initial button is disabled',async()=>{
+ const h=setup();await h.el('#process').listeners.click();
+ assert.equal(h.requests.length,0);assert.equal(h.timers.size,0);
+ const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
+ assert.match(html,/<button[^>]*id="process"[^>]*disabled/);
+});

@@ -1,0 +1,41 @@
+Database constraint inspection:
+images: NOT NULL created_at
+images: NOT NULL id
+images: CHECK ((media_type = ANY (ARRAY['image/jpeg'::text, 'image/png'::text])))
+images: NOT NULL media_type
+images: NOT NULL original_filename
+images: PRIMARY KEY (id)
+images: UNIQUE (public_id)
+images: NOT NULL public_id
+images: CHECK (((size_bytes >= 1) AND (size_bytes <= 10485760)))
+images: NOT NULL size_bytes
+images: UNIQUE (stored_filename)
+images: NOT NULL stored_filename
+jobs: NOT NULL id
+jobs: FOREIGN KEY (image_id) REFERENCES images(id) ON DELETE CASCADE
+jobs: NOT NULL image_id
+jobs: PRIMARY KEY (id)
+jobs: UNIQUE (public_id)
+jobs: NOT NULL public_id
+jobs: NOT NULL queued_at
+jobs: CHECK ((status = ANY (ARRAY['queued'::text, 'processing'::text, 'completed'::text, 'failed'::text])))
+jobs: NOT NULL status
+variants: NOT NULL created_at
+variants: CHECK ((height > 0))
+variants: NOT NULL height
+variants: NOT NULL id
+variants: FOREIGN KEY (image_id) REFERENCES images(id) ON DELETE CASCADE
+variants: UNIQUE (image_id, name)
+variants: NOT NULL image_id
+variants: CHECK ((name = ANY (ARRAY['thumbnail'::text, 'preview'::text, 'display'::text])))
+variants: NOT NULL name
+variants: PRIMARY KEY (id)
+variants: CHECK ((size_bytes > 0))
+variants: NOT NULL size_bytes
+variants: UNIQUE (stored_filename)
+variants: NOT NULL stored_filename
+variants: CHECK ((width > 0))
+variants: NOT NULL width
+
+Completed variant files inspected: 63
+PASS: originals and variants exist; sizes/dimensions match metadata; all completed jobs have three variants.
