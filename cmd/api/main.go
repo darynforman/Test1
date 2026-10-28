@@ -14,11 +14,12 @@ import (
 )
 
 type config struct {
-	port        int
-	env         string
-	storageDir  string
-	workerDelay time.Duration
-	db          struct {
+	port               int
+	env                string
+	storageDir         string
+	workerDelay        time.Duration
+	simulationInterval time.Duration
+	db                 struct {
 		dsn          string
 		maxOpenConns int
 		maxIdleConns int
@@ -45,9 +46,15 @@ func main() {
 	flag.DurationVar(&cfg.db.maxIdleTime, "db-max-idle-time", 15*time.Minute, "PostgreSQL max connection idle time")
 
 	flag.DurationVar(&cfg.workerDelay, "worker-delay", 0, "Optional processing delay for check-in demonstrations")
+	flag.DurationVar(&cfg.simulationInterval, "simulation-interval", 0, "Lab only: 2s or 200ms updates during a 10-second simulated phase (0 disables)")
 	flag.Parse()
+	if cfg.simulationInterval != 0 && cfg.simulationInterval != 2*time.Second && cfg.simulationInterval != 200*time.Millisecond {
+		flag.Usage()
+		os.Exit(2)
+	}
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+	slog.SetDefault(logger)
 
 	// Confirm the database works before starting the HTTP server.
 	db, err := openDB(cfg)
@@ -62,7 +69,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	logger.Info("database connection pool established")
+	logger.Info("database connection pool established", "worker_delay", cfg.workerDelay, "simulation_interval", cfg.simulationInterval)
 
 	app := &application{
 		config: cfg,

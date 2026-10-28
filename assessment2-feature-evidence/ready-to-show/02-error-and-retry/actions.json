@@ -1,0 +1,29 @@
+[
+  {
+    "time_ms": 1793116150027,
+    "action": "change_polling_mode",
+    "mode": "short"
+  },
+  {
+    "time_ms": 1793116150409,
+    "action": "click_Process_image"
+  },
+  {
+    "time_ms": 1793116151701,
+    "action": "worker_processing_observed",
+    "job_id": "e8c3ad18-7333-40f2-b9a6-2712b29ba263"
+  },
+  {
+    "time_ms": 1793116151957,
+    "action": "enable_status_connection_fault",
+    "job_id": "e8c3ad18-7333-40f2-b9a6-2712b29ba263"
+  },
+  {
+    "time_ms": 1793116155547,
+    "action": "disable_status_connection_fault"
+  },
+  {
+    "time_ms": 1793116155547,
+    "action": "click_Try_again"
+  }
+]

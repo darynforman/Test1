@@ -1,0 +1,13 @@
+{
+  "condition": "A",
+  "prediction": "short polling will send more requests because longpolling reduces uneccesssary checking",
+  "author": "user",
+  "written_before_runs": "2026-10-25T16:19:35.426612+00:00",
+  "setup": {
+    "quiet_delay_seconds": 30,
+    "simulation_enabled": false,
+    "image": "VALID-beach.png",
+    "additional_latency": "none"
+  },
+  "status": "Prediction saved. No runs started."
+}

@@ -1,0 +1,59 @@
+{
+  "run_id": "B-long-1",
+  "condition": "B",
+  "mode": "long",
+  "repetition": 1,
+  "job_id": "bf5cf4c5-4946-4e5a-8c2f-024128c21f27",
+  "image": "VALID-beach.png",
+  "latency_setting": "No added latency",
+  "baseline_version": 1,
+  "terminal_version": 6,
+  "requests_started": 5,
+  "initial_200": 1,
+  "newer_200": 4,
+  "unchanged_200": 0,
+  "no_change_204": 0,
+  "retrieval_errors": 0,
+  "cancellations": 0,
+  "distinct_new_versions_seen": 4,
+  "processing_ms": 277.371,
+  "detection_ms": 7,
+  "notes": "Browser Date.now() at JSON receipt minus server post-commit commit_ms; millisecond resolution with scheduling uncertainty. Short interval: 1000ms after each response. render_ms records DOM updates, not paint.",
+  "observation_db_reads": 10,
+  "received_versions": [
+    1,
+    2,
+    3,
+    4,
+    6
+  ],
+  "committed_after_baseline": [
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "missing_versions": [
+    5
+  ],
+  "terminal_commit_ms": 1792947205430,
+  "terminal_receipt_ms": 1792947205437,
+  "between_request_gaps_ms": [
+    4,
+    1,
+    1,
+    0
+  ],
+  "validation": {
+    "completed": true,
+    "three_variants": true,
+    "foreground_samples_visible": true,
+    "all_requests_accounted": true,
+    "one_mode": true,
+    "one_initial_snapshot": true,
+    "terminal_commit_found": true,
+    "server_settings_match": true,
+    "no_retrieval_errors_or_cancellations": true
+  }
+}

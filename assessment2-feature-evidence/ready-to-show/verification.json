@@ -1,0 +1,84 @@
+{
+  "checked_at": "2026-10-27T15:54:41.098916+00:00",
+  "scope": "Four completed lifecycle demonstrations: mode switching, actual connection-error retry, failed-job stop in both modes. This is separate from the 30 experiment runs; not a blanket pass of all assessment checks.",
+  "demonstrations": [
+    {
+      "demonstration": "01-mode-switch",
+      "job_id": "0f987258-0dfd-4df2-8f3f-6886d5d71bdc",
+      "terminal_state": "completed",
+      "upload_POSTs": 1,
+      "requests_at_terminal": 12,
+      "requests_after_stop_check": 12,
+      "no_further_polling_observed_ms": 6520,
+      "same_job": true,
+      "checked": true,
+      "animation": "01-mode-switch/demonstration.gif"
+    },
+    {
+      "demonstration": "02-error-and-retry",
+      "job_id": "e8c3ad18-7333-40f2-b9a6-2712b29ba263",
+      "terminal_state": "completed",
+      "upload_POSTs": 1,
+      "requests_at_terminal": 15,
+      "requests_after_stop_check": 15,
+      "no_further_polling_observed_ms": 6487,
+      "same_job": true,
+      "checked": true,
+      "animation": "02-error-and-retry/demonstration.gif"
+    },
+    {
+      "demonstration": "03-failure-long",
+      "job_id": "c1b2662d-d29f-4766-80c4-d86f338149f3",
+      "terminal_state": "failed",
+      "upload_POSTs": 1,
+      "requests_at_terminal": 3,
+      "requests_after_stop_check": 3,
+      "no_further_polling_observed_ms": 6345,
+      "same_job": true,
+      "checked": true,
+      "animation": "03-failure-long/demonstration.gif"
+    },
+    {
+      "demonstration": "04-failure-short",
+      "job_id": "d05466ed-138e-497f-bc70-16410e3f4d01",
+      "terminal_state": "failed",
+      "upload_POSTs": 1,
+      "requests_at_terminal": 10,
+      "requests_after_stop_check": 10,
+      "no_further_polling_observed_ms": 6439,
+      "same_job": true,
+      "checked": true,
+      "animation": "04-failure-short/demonstration.gif"
+    }
+  ],
+  "audit": [
+    {
+      "demonstration": "01-mode-switch",
+      "source_session": "session-20261027-094831",
+      "evidence_files_byte_preserved": true,
+      "source_and_experiment_csv_unchanged": true
+    },
+    {
+      "demonstration": "02-error-and-retry",
+      "source_session": "session-20261027-094831",
+      "evidence_files_byte_preserved": true,
+      "source_and_experiment_csv_unchanged": true
+    },
+    {
+      "demonstration": "03-failure-long",
+      "source_session": "session-20261027-095236",
+      "evidence_files_byte_preserved": true,
+      "source_and_experiment_csv_unchanged": true
+    },
+    {
+      "demonstration": "04-failure-short",
+      "source_session": "session-20261027-095236",
+      "evidence_files_byte_preserved": true,
+      "source_and_experiment_csv_unchanged": true
+    }
+  ],
+  "faults_disclosed": "For retry, a temporary local forwarder deliberately closed real status-GET connections; successful responses came from the unchanged Go app. For failure, only a newly uploaded demo copy was temporarily renamed; the real worker recorded failed and the copy was restored.",
+  "cancellation_limit": "Forwarder can retain an upstream request after the browser aborts; backend cancellation resource cleanup is not established by these captures.",
+  "recording_format": "GIF animations made from time-sampled native Firefox job-panel screenshots. Capture timestamps and individual PNGs are included; white padding only equalises frame sizes. Not full-frame-rate screen video.",
+  "interrupted_attempt": "session-20261027-094831 was interrupted during its third case; only its first two fully verified cases are included. The failure cases are from completed session-20261027-095236. Original attempts remain preserved separately."
+}

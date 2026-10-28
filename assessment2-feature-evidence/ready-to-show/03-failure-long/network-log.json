@@ -1,0 +1,91 @@
+[
+  {
+    "request_id": 5,
+    "method": "POST",
+    "path": "/v1/images",
+    "start_ms": 1793116367793,
+    "http_status": 202,
+    "response_ms": 1793116367954,
+    "outcome": "upstream_response",
+    "response_json": {
+      "image_id": "8cda180f-b691-4ea6-a997-a92e665100b6",
+      "job_id": "c1b2662d-d29f-4766-80c4-d86f338149f3",
+      "stage": "starting",
+      "status": "queued",
+      "status_url": "/v1/jobs/c1b2662d-d29f-4766-80c4-d86f338149f3",
+      "variants_completed": 0,
+      "version": 1
+    },
+    "end_ms": 1793116367955
+  },
+  {
+    "request_id": 6,
+    "method": "GET",
+    "path": "/v1/jobs/c1b2662d-d29f-4766-80c4-d86f338149f3",
+    "start_ms": 1793116367977,
+    "http_status": 200,
+    "response_ms": 1793116367980,
+    "outcome": "upstream_response",
+    "response_json": {
+      "version": 1,
+      "stage": "starting",
+      "variants_completed": 0,
+      "simulation_step": 0,
+      "id": "c1b2662d-d29f-4766-80c4-d86f338149f3",
+      "image_id": "8cda180f-b691-4ea6-a997-a92e665100b6",
+      "status": "queued",
+      "queued_at": "2026-10-27T09:52:47.942188-06:00",
+      "started_at": null,
+      "completed_at": null,
+      "failed_at": null
+    },
+    "end_ms": 1793116367980
+  },
+  {
+    "request_id": 7,
+    "method": "GET",
+    "path": "/v1/jobs/c1b2662d-d29f-4766-80c4-d86f338149f3?after=1&wait=20",
+    "start_ms": 1793116368056,
+    "http_status": 200,
+    "response_ms": 1793116368068,
+    "outcome": "upstream_response",
+    "response_json": {
+      "version": 2,
+      "stage": "starting",
+      "variants_completed": 0,
+      "simulation_step": 0,
+      "id": "c1b2662d-d29f-4766-80c4-d86f338149f3",
+      "image_id": "8cda180f-b691-4ea6-a997-a92e665100b6",
+      "status": "processing",
+      "queued_at": "2026-10-27T09:52:47.942188-06:00",
+      "started_at": "2026-10-27T09:52:48.058213-06:00",
+      "completed_at": null,
+      "failed_at": null
+    },
+    "end_ms": 1793116368069
+  },
+  {
+    "request_id": 8,
+    "method": "GET",
+    "path": "/v1/jobs/c1b2662d-d29f-4766-80c4-d86f338149f3?after=2&wait=20",
+    "start_ms": 1793116368077,
+    "http_status": 200,
+    "response_ms": 1793116376064,
+    "outcome": "upstream_response",
+    "response_json": {
+      "version": 3,
+      "stage": "starting",
+      "variants_completed": 0,
+      "simulation_step": 0,
+      "id": "c1b2662d-d29f-4766-80c4-d86f338149f3",
+      "image_id": "8cda180f-b691-4ea6-a997-a92e665100b6",
+      "status": "failed",
+      "error": "Image processing could not finish. Please submit the image again.",
+      "queued_at": "2026-10-27T09:52:47.942188-06:00",
+      "started_at": "2026-10-27T09:52:48.058213-06:00",
+      "completed_at": null,
+      "failed_at": "2026-10-27T09:52:56.06134-06:00"
+    },
+    "end_ms": 1793116376064
+  }
+]

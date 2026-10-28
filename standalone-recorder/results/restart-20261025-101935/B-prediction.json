@@ -1,0 +1,14 @@
+{
+  "condition": "B",
+  "prediction": "shortpolling",
+  "reason": "because the client stops polling once it detects the job is complete",
+  "author": "user",
+  "written_before_runs": "2026-10-25T16:52:06.583949+00:00",
+  "setup": {
+    "quiet_delay_seconds": 0,
+    "simulation_enabled": false,
+    "image": "VALID-beach.png",
+    "additional_latency": "none"
+  },
+  "status": "Prediction saved; no condition-B runs started."
+}

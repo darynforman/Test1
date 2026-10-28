@@ -1,0 +1,38 @@
+{
+  "checked_at": "2026-10-25T17:42:50.725915+00:00",
+  "measured_runs": 30,
+  "conditions": [
+    "A",
+    "B",
+    "C1",
+    "C2",
+    "C3"
+  ],
+  "runs_per_condition_and_mode": 3,
+  "checks": [
+    "unique run IDs",
+    "required raw files present",
+    "every request accounted",
+    "receipt-minus-commit calculation",
+    "processing duration from actual timestamps",
+    "database-read totals",
+    "received and missing versions",
+    "no overlapping observation intervals",
+    "three final variants",
+    "same input hash",
+    "expected server settings",
+    "all simulated commit steps",
+    "alternating mode order",
+    "C3 timing checks"
+  ],
+  "c3_configured_latency_ms": 200,
+  "c3_actual_increase_in_prompt_get_medians_ms": [
+    231,
+    192,
+    221,
+    211,
+    285,
+    174
+  ],
+  "notes": "Foreground visibility was sampled during each run. C3 uses Firefox native Network Monitor throttling, with upload/download limits of 1000000000 bytes/s. Measured timing varies; do not describe it as exactly 200ms added to every request. Completion detection is a same-machine millisecond wall-clock estimate. The recorder-diagnostic folder is excluded from all measured counts."
+}

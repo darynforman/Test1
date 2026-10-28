@@ -1,0 +1,37 @@
+{
+  "version": 11,
+  "stage": "display_ready",
+  "variants_completed": 3,
+  "simulation_step": 5,
+  "id": "9715f89e-8894-432e-bd55-6dcc47987408",
+  "image_id": "4620dd80-5a7b-4e62-9ff4-55bc384e5ed0",
+  "status": "completed",
+  "queued_at": "2026-10-25T11:12:56.09453-06:00",
+  "started_at": "2026-10-25T11:12:56.943293-06:00",
+  "completed_at": "2026-10-25T11:13:07.11158-06:00",
+  "failed_at": null,
+  "variants": [
+    {
+      "name": "thumbnail",
+      "width": 150,
+      "height": 150,
+      "size_bytes": 10410,
+      "url": "/v1/images/4620dd80-5a7b-4e62-9ff4-55bc384e5ed0/variants/thumbnail"
+    },
+    {
+      "name": "preview",
+      "width": 800,
+      "height": 533,
+      "size_bytes": 143153,
+      "url": "/v1/images/4620dd80-5a7b-4e62-9ff4-55bc384e5ed0/variants/preview"
+    },
+    {
+      "name": "display",
+      "width": 1200,
+      "height": 800,
+      "size_bytes": 281077,
+      "url": "/v1/images/4620dd80-5a7b-4e62-9ff4-55bc384e5ed0/variants/display"
+    }
+  ],
+  "status_url": "/v1/jobs/9715f89e-8894-432e-bd55-6dcc47987408"
+}

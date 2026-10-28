@@ -1,0 +1,58 @@
+{
+  "latency_setting": "Firefox Network Monitor: latency=200ms; upload/download limit=1000000000 bytes/s; actual timings recorded per run",
+  "tool": "Firefox Network Monitor native throttling for C3; browser performance.now() for elapsed request timing only",
+  "configured": {
+    "downloadThroughput": 1000000000,
+    "uploadThroughput": 1000000000,
+    "latency": 200
+  },
+  "baseline_readings": [
+    {
+      "status": 200,
+      "round_trip_ms": 28
+    },
+    {
+      "status": 200,
+      "round_trip_ms": 7
+    },
+    {
+      "status": 200,
+      "round_trip_ms": 7
+    },
+    {
+      "status": 200,
+      "round_trip_ms": 8
+    },
+    {
+      "status": 200,
+      "round_trip_ms": 5
+    }
+  ],
+  "readings": [
+    {
+      "status": 200,
+      "round_trip_ms": 251
+    },
+    {
+      "status": 200,
+      "round_trip_ms": 270
+    },
+    {
+      "status": 200,
+      "round_trip_ms": 380
+    },
+    {
+      "status": 200,
+      "round_trip_ms": 292
+    },
+    {
+      "status": 200,
+      "round_trip_ms": 295
+    }
+  ],
+  "documentation": "https://firefox-source-docs.mozilla.org/devtools-user/network_monitor/throttling/index.html",
+  "baseline_median_ms": 7,
+  "throttled_median_ms": 292,
+  "measured_additional_median_ms": 285,
+  "latency_check_accepted": true
+}

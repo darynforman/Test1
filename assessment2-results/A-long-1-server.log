@@ -1,0 +1,13 @@
+time=2026-10-24T14:11:28.374-06:00 level=INFO msg=job_commit job_id=a2bc60e2-af1d-474e-b31f-410c0f2e0a9f version=1 status=queued stage=starting variants_completed=0 simulation_step=0 commit_ms=1792872688374
+time=2026-10-24T14:11:28.418-06:00 level=INFO msg=observation job_id=a2bc60e2-af1d-474e-b31f-410c0f2e0a9f db_reads=1
+time=2026-10-24T14:11:28.679-06:00 level=INFO msg=job_commit job_id=a2bc60e2-af1d-474e-b31f-410c0f2e0a9f version=2 status=processing stage=starting variants_completed=0 simulation_step=0 commit_ms=1792872688679
+time=2026-10-24T14:11:28.679-06:00 level=INFO msg="job processing" job_id=01a16f8a-2ad8-7055-8534-5abbcc26c5af
+time=2026-10-24T14:11:28.681-06:00 level=INFO msg=observation job_id=a2bc60e2-af1d-474e-b31f-410c0f2e0a9f db_reads=2
+time=2026-10-24T14:11:48.702-06:00 level=INFO msg=observation job_id=a2bc60e2-af1d-474e-b31f-410c0f2e0a9f db_reads=2
+time=2026-10-24T14:11:58.759-06:00 level=INFO msg=job_commit job_id=a2bc60e2-af1d-474e-b31f-410c0f2e0a9f version=3 status=processing stage=thumbnail_ready variants_completed=1 simulation_step=0 commit_ms=1792872718759
+time=2026-10-24T14:11:58.762-06:00 level=INFO msg=observation job_id=a2bc60e2-af1d-474e-b31f-410c0f2e0a9f db_reads=2
+time=2026-10-24T14:11:58.831-06:00 level=INFO msg=job_commit job_id=a2bc60e2-af1d-474e-b31f-410c0f2e0a9f version=4 status=processing stage=preview_ready variants_completed=2 simulation_step=0 commit_ms=1792872718831
+time=2026-10-24T14:11:58.969-06:00 level=INFO msg=job_commit job_id=a2bc60e2-af1d-474e-b31f-410c0f2e0a9f version=5 status=processing stage=display_ready variants_completed=3 simulation_step=0 commit_ms=1792872718969
+time=2026-10-24T14:11:58.981-06:00 level=INFO msg=job_commit job_id=a2bc60e2-af1d-474e-b31f-410c0f2e0a9f version=6 status=completed stage=display_ready variants_completed=3 simulation_step=0 commit_ms=1792872718981
+time=2026-10-24T14:11:58.981-06:00 level=INFO msg="job completed" job_id=01a16f8a-2ad8-7055-8534-5abbcc26c5af
+time=2026-10-24T14:11:59.802-06:00 level=INFO msg=observation job_id=a2bc60e2-af1d-474e-b31f-410c0f2e0a9f db_reads=2

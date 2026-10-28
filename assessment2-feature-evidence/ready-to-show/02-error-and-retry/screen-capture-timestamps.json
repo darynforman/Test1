@@ -1,0 +1,142 @@
+[
+  {
+    "file": "frames/frame-000.png",
+    "capture_ms": 1793116149917,
+    "display_duration_ms": 148
+  },
+  {
+    "file": "01-ready-job-panel.png",
+    "capture_ms": 1793116150065,
+    "display_duration_ms": 1243
+  },
+  {
+    "file": "frames/frame-002.png",
+    "capture_ms": 1793116151308,
+    "display_duration_ms": 393
+  },
+  {
+    "file": "02-processing-job-panel.png",
+    "capture_ms": 1793116151701,
+    "display_duration_ms": 1039
+  },
+  {
+    "file": "frames/frame-004.png",
+    "capture_ms": 1793116152740,
+    "display_duration_ms": 114
+  },
+  {
+    "file": "03-real-network-error-job-panel.png",
+    "capture_ms": 1793116152854,
+    "display_duration_ms": 1261
+  },
+  {
+    "file": "frames/frame-006.png",
+    "capture_ms": 1793116154115,
+    "display_duration_ms": 1038
+  },
+  {
+    "file": "frames/frame-007.png",
+    "capture_ms": 1793116155153,
+    "display_duration_ms": 465
+  },
+  {
+    "file": "04-retrying-same-job-job-panel.png",
+    "capture_ms": 1793116155618,
+    "display_duration_ms": 1023
+  },
+  {
+    "file": "frames/frame-009.png",
+    "capture_ms": 1793116156641,
+    "display_duration_ms": 1019
+  },
+  {
+    "file": "frames/frame-010.png",
+    "capture_ms": 1793116157660,
+    "display_duration_ms": 1030
+  },
+  {
+    "file": "frames/frame-011.png",
+    "capture_ms": 1793116158690,
+    "display_duration_ms": 1020
+  },
+  {
+    "file": "frames/frame-012.png",
+    "capture_ms": 1793116159710,
+    "display_duration_ms": 1021
+  },
+  {
+    "file": "frames/frame-013.png",
+    "capture_ms": 1793116160731,
+    "display_duration_ms": 1053
+  },
+  {
+    "file": "frames/frame-014.png",
+    "capture_ms": 1793116161784,
+    "display_duration_ms": 1016
+  },
+  {
+    "file": "frames/frame-015.png",
+    "capture_ms": 1793116162800,
+    "display_duration_ms": 1040
+  },
+  {
+    "file": "frames/frame-016.png",
+    "capture_ms": 1793116163840,
+    "display_duration_ms": 1011
+  },
+  {
+    "file": "frames/frame-017.png",
+    "capture_ms": 1793116164851,
+    "display_duration_ms": 1027
+  },
+  {
+    "file": "frames/frame-018.png",
+    "capture_ms": 1793116165878,
+    "display_duration_ms": 1020
+  },
+  {
+    "file": "frames/frame-019.png",
+    "capture_ms": 1793116166898,
+    "display_duration_ms": 242
+  },
+  {
+    "file": "terminal-completed-job-panel.png",
+    "capture_ms": 1793116167140,
+    "display_duration_ms": 1187
+  },
+  {
+    "file": "frames/frame-021.png",
+    "capture_ms": 1793116168327,
+    "display_duration_ms": 1023
+  },
+  {
+    "file": "frames/frame-022.png",
+    "capture_ms": 1793116169350,
+    "display_duration_ms": 991
+  },
+  {
+    "file": "frames/frame-023.png",
+    "capture_ms": 1793116170341,
+    "display_duration_ms": 998
+  },
+  {
+    "file": "frames/frame-024.png",
+    "capture_ms": 1793116171339,
+    "display_duration_ms": 1002
+  },
+  {
+    "file": "frames/frame-025.png",
+    "capture_ms": 1793116172341,
+    "display_duration_ms": 993
+  },
+  {
+    "file": "frames/frame-026.png",
+    "capture_ms": 1793116173334,
+    "display_duration_ms": 240
+  },
+  {
+    "file": "polling-still-stopped-job-panel.png",
+    "capture_ms": 1793116173574,
+    "display_duration_ms": 1200
+  }
+]

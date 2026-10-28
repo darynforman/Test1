@@ -1,0 +1,2 @@
+time=2026-10-24T14:24:09.908-06:00 level=INFO msg="database connection pool established" worker_delay=30s simulation_interval=0s
+time=2026-10-24T14:24:09.908-06:00 level=INFO msg="starting server" addr=:4000 env=development

@@ -1,0 +1,16 @@
+{
+  "condition": "C1",
+  "prediction": "longpolling",
+  "reason": "because it waits for updates rather than repeatedly checking the server",
+  "author": "user",
+  "written_before_runs": "2026-10-25T17:04:27.359697+00:00",
+  "setup": {
+    "quiet_delay_seconds": 0,
+    "simulation_enabled": true,
+    "simulation_duration_seconds": 10,
+    "simulation_interval_seconds": 2,
+    "image": "VALID-beach.png",
+    "additional_latency": "none"
+  },
+  "status": "Prediction saved; no C1 runs started."
+}

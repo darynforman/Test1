@@ -1,0 +1,5 @@
+request_id,method,path,start_ms,response_ms,end_ms,http_status,outcome,downstream_disconnected
+5,POST,/v1/images,1793116367793,1793116367954,1793116367955,202,upstream_response,
+6,GET,/v1/jobs/c1b2662d-d29f-4766-80c4-d86f338149f3,1793116367977,1793116367980,1793116367980,200,upstream_response,
+7,GET,/v1/jobs/c1b2662d-d29f-4766-80c4-d86f338149f3?after=1&wait=20,1793116368056,1793116368068,1793116368069,200,upstream_response,
+8,GET,/v1/jobs/c1b2662d-d29f-4766-80c4-d86f338149f3?after=2&wait=20,1793116368077,1793116376064,1793116376064,200,upstream_response,

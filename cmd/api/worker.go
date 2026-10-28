@@ -64,6 +64,23 @@ func (app *application) processJob(ctx context.Context, job *data.Job, stored st
 		case <-timer.C:
 		}
 	}
+	// Simulation finishes before any real transformation. It never changes the real count.
+	if app.config.simulationInterval > 0 {
+		started := time.Now()
+		ticker := time.NewTicker(app.config.simulationInterval)
+		defer ticker.Stop()
+		for step := 1; step <= int(10*time.Second/app.config.simulationInterval); step++ {
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			case <-ticker.C:
+			}
+			if err := app.models.Jobs.Simulate(ctx, job, step); err != nil {
+				return err
+			}
+		}
+		app.logger.Info("simulation_finished", "job_id", job.PublicID, "elapsed_ms", time.Since(started).Milliseconds())
+	}
 	// Load the saved original; the upload request does not create these variants.
 	f, err := os.Open(filepath.Join(app.config.storageDir, "originals", stored))
 	if err != nil {
@@ -79,16 +96,6 @@ func (app *application) processJob(ctx context.Context, job *data.Job, stored st
 		return err
 	}
 	var variants []data.Variant
-	var paths []string
-	complete := false
-	// If anything fails, try to remove the partial output files before returning.
-	defer func() {
-		if !complete {
-			for _, p := range paths {
-				_ = os.Remove(p)
-			}
-		}
-	}()
 	// Each profile gives the output name, maximum size, and whether to crop.
 	for _, profile := range []struct {
 		name string
@@ -102,7 +109,6 @@ func (app *application) processJob(ctx context.Context, job *data.Job, stored st
 		// Use the job ID and variant name to choose the output filename on the server.
 		name := fmt.Sprintf("%s_%s.jpg", job.ID, profile.name)
 		path := filepath.Join(dir, name)
-		paths = append(paths, path)
 		dst, e := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0640)
 		if e != nil {
 			return e
@@ -121,12 +127,14 @@ func (app *application) processJob(ctx context.Context, job *data.Job, stored st
 		}
 		// Record the actual output dimensions and file size for the database.
 		variants = append(variants, data.Variant{Name: profile.name, StoredFilename: name, Width: out.Bounds().Dx(), Height: out.Bounds().Dy(), SizeBytes: info.Size()})
+		if err = app.models.Jobs.Milestone(ctx, job, variants[len(variants)-1]); err != nil {
+			return err
+		}
 	}
-	// All files are now written; save their metadata and mark the job completed.
+	// All three files and metadata are stored; publish the completed state.
 	if err = app.models.Jobs.Complete(ctx, job, variants); err != nil {
 		return err
 	}
-	complete = true
 	return nil
 }
 

@@ -1,0 +1,39 @@
+{
+  "run_id": "A-short-1",
+  "condition": "A",
+  "mode": "short",
+  "repetition": 1,
+  "job_id": "a29f226c-a837-4c83-b3ce-92f070dde0c3",
+  "requests_started": 30,
+  "initial_200": 1,
+  "newer_200": 2,
+  "unchanged_200": 27,
+  "no_change_204": 0,
+  "retrieval_errors": 0,
+  "cancellations": 0,
+  "baseline_version": 1,
+  "terminal_version": 6,
+  "distinct_new_versions_seen": 2,
+  "received_versions": [
+    1,
+    2,
+    6
+  ],
+  "missing_versions": [
+    3,
+    4,
+    5
+  ],
+  "terminal_commit_ms": 1792871855909,
+  "terminal_receipt_ms": 1792871856575,
+  "detection_ms": 666,
+  "observation_db_reads": 31,
+  "known_artificial_delay_ms": 30000,
+  "processing_ms": 30230.967,
+  "notes": "Original browser log includes three earlier jobs; only the matching job is counted. Processing duration comes from final response timestamps. Detection is a same-machine wall-clock estimate with millisecond resolution and scheduling uncertainty. Subtracting the configured delay gives an estimate including transformation, database, and scheduling time.",
+  "started_at": "2026-10-24T13:57:05.677257-06:00",
+  "completed_at": "2026-10-24T13:57:35.908224-06:00",
+  "image": "VALID-beach.png",
+  "latency_setting": "No added latency reported; user-run foreground browser",
+  "processing_excluding_configured_delay_ms_estimate": 230.967
+}

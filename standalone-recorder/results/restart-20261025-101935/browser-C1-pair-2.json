@@ -1,0 +1,27 @@
+{
+  "acceptInsecureCerts": false,
+  "browserName": "firefox",
+  "browserVersion": "156.0.1",
+  "platformName": "linux",
+  "setWindowRect": true,
+  "unhandledPromptBehavior": "dismiss and notify",
+  "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:156.0) Gecko/20100101 Firefox/156.0",
+  "moz:buildID": "20260921225441",
+  "moz:headless": false,
+  "moz:platformVersion": "7.0.0-38-generic",
+  "moz:processID": 18613,
+  "moz:profile": "/home/daryn-forman/snap/firefox/common/.cache/imagelab-recorder-l5lzs0pj/rust_mozprofileXlUT5L",
+  "moz:shutdownTimeout": 60000,
+  "pageLoadStrategy": "eager",
+  "timeouts": {
+    "implicit": 0,
+    "pageLoad": 300000,
+    "script": 30000
+  },
+  "strictFileInteractability": false,
+  "moz:accessibilityChecks": false,
+  "moz:webdriverClick": true,
+  "moz:windowless": false,
+  "proxy": {},
+  "moz:geckodriverVersion": "0.37.1"
+}

@@ -1,0 +1,14 @@
+{
+  "purpose": "Separate lifecycle demonstrations, not additional experimental runs",
+  "image": "/home/daryn-forman/Pictures/ImageLab-Test-Images/VALID-beach.png",
+  "image_sha256": "b1be5d0e910d3669786fc6151caa3691e598141e7d81ee4a39e43c790bcc97f4",
+  "worker_delay": "8s",
+  "simulation_interval": "0s",
+  "app_port": 4101,
+  "browser_forwarder_port": 4100,
+  "storage": "/tmp/imagelab-feature-6gjth8xr/storage",
+  "network_fault": "External localhost forwarder deliberately closes status-GET connection. Real Go application handles all successful requests; no fake snapshots or fetch replacement.",
+  "failure_fault": "Temporarily rename only the newly uploaded demonstration copy, then restore after real worker failure.",
+  "proxy_limitation": "During mode cancellation, the browser abort is real; this simple forwarder may keep its upstream request open until the next server response. These captures do not test backend cancellation cleanup.",
+  "screenshots": "Actual Firefox full-page and native job-panel screenshots, plus raw logs and time-sampled job-panel GIF sequences. White padding only equalises frame dimensions."
+}

@@ -1,0 +1,32 @@
+{
+  "demonstration": "worker_failure_short",
+  "job_id": "d05466ed-138e-497f-bc70-16410e3f4d01",
+  "observed_terminal_state": "failed",
+  "real_browser_UI": true,
+  "source_unchanged": true,
+  "upload_POSTs": 1,
+  "browser_requests_at_terminal": 10,
+  "browser_requests_after_six_seconds": 10,
+  "stop_observed_for_ms": 6439,
+  "no_pending_requests": true,
+  "same_job_throughout": true,
+  "checks": {
+    "injected_fault": "Only this new demo copy temporarily absent when worker opens it",
+    "worker_persisted_failure": true,
+    "browser_showed_failed_and_safe_error": true,
+    "polling_stopped_in_mode": "short",
+    "no_completed_results": true
+  },
+  "database_terminal_record": {
+    "public_id": "d05466ed-138e-497f-bc70-16410e3f4d01",
+    "status": "failed",
+    "version": 3,
+    "variants_completed": 0,
+    "error_message": "Image processing could not finish. Please submit the image again.",
+    "started_at": "2026-10-27T09:53:04.057794-06:00",
+    "completed_at": null,
+    "failed_at": "2026-10-27T09:53:12.065583-06:00"
+  },
+  "recording": "Time-sampled actual browser screenshots; GIF frame durations follow capture timestamps. Not a full-frame-rate video.",
+  "independent_packaging_audit": "Source and 30-run CSV hashes rechecked against the pre-capture manifest; screenshots/state/logs independently reconciled."
+}

@@ -5,9 +5,10 @@ DB_USER ?= $(shell id -un)
 IMAGELAB_DB_DSN ?= host=/var/run/postgresql dbname=$(DB_NAME) user=$(DB_USER) sslmode=disable
 PORT ?= 4000
 WORKER_DELAY ?= 0s
+SIMULATION_INTERVAL ?= 0s
 NODE ?= node
 export IMAGELAB_DB_DSN IMAGELAB_TEST_DSN
-export PORT WORKER_DELAY DB_NAME
+export PORT WORKER_DELAY SIMULATION_INTERVAL DB_NAME
 
 .PHONY: help run db-create db-shell db-tables db-failures db-init check-dsn test test-go test-ui test-integration test-all test-failure vet
 
@@ -36,7 +37,7 @@ check-dsn:
 	@test -n "$$IMAGELAB_DB_DSN" || { echo 'Set IMAGELAB_DB_DSN first (see make help).' >&2; exit 1; }
 
 run: check-dsn
-	@go run ./cmd/api -db-dsn="$$IMAGELAB_DB_DSN" -port="$$PORT" -worker-delay="$$WORKER_DELAY"
+	@go run ./cmd/api -db-dsn="$$IMAGELAB_DB_DSN" -port="$$PORT" -worker-delay="$$WORKER_DELAY" -simulation-interval="$$SIMULATION_INTERVAL"
 
 db-create:
 	@createdb "$$DB_NAME"

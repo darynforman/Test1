@@ -1,0 +1,28 @@
+time=2026-10-25T10:55:51.976-06:00 level=INFO msg="database connection pool established" worker_delay=0s simulation_interval=0s
+time=2026-10-25T10:55:51.977-06:00 level=INFO msg="starting server" addr=:4000 env=development
+time=2026-10-25T10:56:02.540-06:00 level=INFO msg=job_commit job_id=27773049-5ba6-4004-84d6-bb52b34c67b7 version=1 status=queued stage=starting variants_completed=0 simulation_step=0 commit_ms=1792947362540
+time=2026-10-25T10:56:02.556-06:00 level=INFO msg=observation job_id=27773049-5ba6-4004-84d6-bb52b34c67b7 db_reads=1
+time=2026-10-25T10:56:02.980-06:00 level=INFO msg=job_commit job_id=27773049-5ba6-4004-84d6-bb52b34c67b7 version=2 status=processing stage=starting variants_completed=0 simulation_step=0 commit_ms=1792947362980
+time=2026-10-25T10:56:02.980-06:00 level=INFO msg="job processing" job_id=01a173fd-9aea-7036-838f-07bc1212ea3d
+time=2026-10-25T10:56:02.984-06:00 level=INFO msg=observation job_id=27773049-5ba6-4004-84d6-bb52b34c67b7 db_reads=2
+time=2026-10-25T10:56:03.100-06:00 level=INFO msg=job_commit job_id=27773049-5ba6-4004-84d6-bb52b34c67b7 version=3 status=processing stage=thumbnail_ready variants_completed=1 simulation_step=0 commit_ms=1792947363100
+time=2026-10-25T10:56:03.125-06:00 level=INFO msg=observation job_id=27773049-5ba6-4004-84d6-bb52b34c67b7 db_reads=1
+time=2026-10-25T10:56:03.228-06:00 level=INFO msg=job_commit job_id=27773049-5ba6-4004-84d6-bb52b34c67b7 version=4 status=processing stage=preview_ready variants_completed=2 simulation_step=0 commit_ms=1792947363228
+time=2026-10-25T10:56:03.232-06:00 level=INFO msg=observation job_id=27773049-5ba6-4004-84d6-bb52b34c67b7 db_reads=2
+time=2026-10-25T10:56:03.449-06:00 level=INFO msg=job_commit job_id=27773049-5ba6-4004-84d6-bb52b34c67b7 version=5 status=processing stage=display_ready variants_completed=3 simulation_step=0 commit_ms=1792947363449
+time=2026-10-25T10:56:03.454-06:00 level=INFO msg=job_commit job_id=27773049-5ba6-4004-84d6-bb52b34c67b7 version=6 status=completed stage=display_ready variants_completed=3 simulation_step=0 commit_ms=1792947363454
+time=2026-10-25T10:56:03.456-06:00 level=INFO msg="job completed" job_id=01a173fd-9aea-7036-838f-07bc1212ea3d
+time=2026-10-25T10:56:03.459-06:00 level=INFO msg=observation job_id=27773049-5ba6-4004-84d6-bb52b34c67b7 db_reads=3
+time=2026-10-25T10:56:05.244-06:00 level=INFO msg=job_commit job_id=bea15aa2-c84e-4d1b-bd8f-33de1255deaf version=1 status=queued stage=starting variants_completed=0 simulation_step=0 commit_ms=1792947365244
+time=2026-10-25T10:56:05.260-06:00 level=INFO msg=observation job_id=bea15aa2-c84e-4d1b-bd8f-33de1255deaf db_reads=1
+time=2026-10-25T10:56:05.983-06:00 level=INFO msg=job_commit job_id=bea15aa2-c84e-4d1b-bd8f-33de1255deaf version=2 status=processing stage=starting variants_completed=0 simulation_step=0 commit_ms=1792947365983
+time=2026-10-25T10:56:05.983-06:00 level=INFO msg="job processing" job_id=01a173fd-a579-7818-8b00-d180e626904d
+time=2026-10-25T10:56:06.046-06:00 level=INFO msg=job_commit job_id=bea15aa2-c84e-4d1b-bd8f-33de1255deaf version=3 status=processing stage=thumbnail_ready variants_completed=1 simulation_step=0 commit_ms=1792947366046
+time=2026-10-25T10:56:06.084-06:00 level=INFO msg=job_commit job_id=bea15aa2-c84e-4d1b-bd8f-33de1255deaf version=4 status=processing stage=preview_ready variants_completed=2 simulation_step=0 commit_ms=1792947366084
+time=2026-10-25T10:56:06.162-06:00 level=INFO msg=job_commit job_id=bea15aa2-c84e-4d1b-bd8f-33de1255deaf version=5 status=processing stage=display_ready variants_completed=3 simulation_step=0 commit_ms=1792947366162
+time=2026-10-25T10:56:06.164-06:00 level=INFO msg=job_commit job_id=bea15aa2-c84e-4d1b-bd8f-33de1255deaf version=6 status=completed stage=display_ready variants_completed=3 simulation_step=0 commit_ms=1792947366164
+time=2026-10-25T10:56:06.164-06:00 level=INFO msg="job completed" job_id=01a173fd-a579-7818-8b00-d180e626904d
+time=2026-10-25T10:56:06.272-06:00 level=INFO msg=observation job_id=bea15aa2-c84e-4d1b-bd8f-33de1255deaf db_reads=2
+time=2026-10-25T10:56:07.680-06:00 level=INFO msg="caught signal" signal=interrupt
+time=2026-10-25T10:56:07.680-06:00 level=INFO msg="stopped server"
+make: *** [Makefile:40: run] Interrupt

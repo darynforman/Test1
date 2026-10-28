@@ -1,0 +1,11 @@
+condition,workload,mode,runs,median_detection_ms,min_detection_ms,max_detection_ms
+A,30-second quiet delay,short,3,693,128,773
+A,30-second quiet delay,long,3,13,3,21
+B,Real image processing,short,3,111,29,221
+B,Real image processing,long,3,10,7,12
+C1,10-second simulation; 2-second updates,short,3,427,102,905
+C1,10-second simulation; 2-second updates,long,3,8,7,39
+C2,10-second simulation; 200-ms updates,short,3,346,323,830
+C2,10-second simulation; 200-ms updates,long,3,12,4,14
+C3,C2 plus Firefox latency setting of 200 ms,short,3,542,426,1221
+C3,C2 plus Firefox latency setting of 200 ms,long,3,425,415,484

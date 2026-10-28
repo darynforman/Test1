@@ -1,0 +1,17 @@
+{
+  "condition": "C2",
+  "prediction": "short polling",
+  "prediction_author": "user",
+  "prediction_reason": "cause updates occur very frequently allowing each request to retrieve multiple updates at once",
+  "written_before_runs": "2026-10-25T17:22:54.781811+00:00",
+  "image": "/home/daryn-forman/Pictures/ImageLab-Test-Images/VALID-beach.png",
+  "image_sha256": "b1be5d0e910d3669786fc6151caa3691e598141e7d81ee4a39e43c790bcc97f4",
+  "worker_delay": "0s",
+  "simulation_interval": "200ms",
+  "latency_setting": "No added latency",
+  "planned_runs": [
+    "C2-long-2",
+    "C2-short-2"
+  ],
+  "method": "Real Firefox UI uploads to the unchanged Go application. Each job finishes before the next upload. Browser Date.now() receipt timestamps are joined with server post-commit commit_ms. Millisecond resolution and scheduling uncertainty apply."
+}

@@ -1,0 +1,9 @@
+{
+  "condition": "A",
+  "prediction": "Quiet processing: long polling should use fewer unchanged observation requests than short polling.",
+  "written_at": "2026-10-25T03:52:27.626622+00:00",
+  "latency_setting": "No added latency; keep browser throttling disabled",
+  "server_log": "assessment2-results/A-server.log",
+  "url": "http://localhost:4000",
+  "method": "Read existing in-page observation log and final job snapshot through WebDriver; no injected fetch wrapper and no extra job GETs. User starts every upload. A separate Firefox profile is used."
+}

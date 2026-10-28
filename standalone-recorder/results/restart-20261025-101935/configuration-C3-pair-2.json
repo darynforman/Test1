@@ -1,0 +1,17 @@
+{
+  "condition": "C3",
+  "prediction": "it will increase the completion detection delay for both short and long polling because responses take longer to reach the client",
+  "prediction_author": "user",
+  "prediction_reason": "",
+  "written_before_runs": "2026-10-25T17:39:12.161690+00:00",
+  "image": "/home/daryn-forman/Pictures/ImageLab-Test-Images/VALID-beach.png",
+  "image_sha256": "b1be5d0e910d3669786fc6151caa3691e598141e7d81ee4a39e43c790bcc97f4",
+  "worker_delay": "0s",
+  "simulation_interval": "200ms",
+  "latency_setting": "Firefox Network Monitor: latency=200ms; upload/download limit=1000000000 bytes/s; actual timings recorded per run",
+  "planned_runs": [
+    "C3-long-2",
+    "C3-short-2"
+  ],
+  "method": "Real Firefox UI uploads to the unchanged Go application. Each job finishes before the next upload. Browser Date.now() receipt timestamps are joined with server post-commit commit_ms. Millisecond resolution and scheduling uncertainty apply."
+}

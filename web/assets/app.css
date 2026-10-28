@@ -158,3 +158,8 @@ button { font: 600 12px "DM Sans", sans-serif; cursor: pointer; transition: .18s
 .variant-card p { color: var(--muted); }
 .variant-card a { display: inline-block; margin-right: 14px; color: var(--forest-dark); }
 @media (max-width: 760px) { .variant-grid { grid-template-columns: 1fr; } }
+
+.observation-controls { border:1px solid #dce2eb; border-radius:8px; margin:16px 0; padding:12px; display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.observation-controls legend { padding:0 6px; font-weight:600; }
+.observation-controls select { font:inherit; padding:8px; max-width:100%; }
+#jobProgress { overflow-wrap:anywhere; }

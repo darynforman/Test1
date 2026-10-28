@@ -1,0 +1,5 @@
+demonstration,job_id,terminal_state,upload_POSTs,requests_at_terminal,requests_after_stop_check,no_further_polling_observed_ms,same_job,checked,animation
+01-mode-switch,0f987258-0dfd-4df2-8f3f-6886d5d71bdc,completed,1,12,12,6520,True,True,01-mode-switch/demonstration.gif
+02-error-and-retry,e8c3ad18-7333-40f2-b9a6-2712b29ba263,completed,1,15,15,6487,True,True,02-error-and-retry/demonstration.gif
+03-failure-long,c1b2662d-d29f-4766-80c4-d86f338149f3,failed,1,3,3,6345,True,True,03-failure-long/demonstration.gif
+04-failure-short,d05466ed-138e-497f-bc70-16410e3f4d01,failed,1,10,10,6439,True,True,04-failure-short/demonstration.gif

@@ -1,0 +1,102 @@
+[
+  {
+    "file": "frames/frame-000.png",
+    "capture_ms": 1793116383390,
+    "display_duration_ms": 89
+  },
+  {
+    "file": "01-ready-job-panel.png",
+    "capture_ms": 1793116383479,
+    "display_duration_ms": 1082
+  },
+  {
+    "file": "frames/frame-002.png",
+    "capture_ms": 1793116384561,
+    "display_duration_ms": 391
+  },
+  {
+    "file": "02-processing-job-panel.png",
+    "capture_ms": 1793116384952,
+    "display_duration_ms": 321
+  },
+  {
+    "file": "03-waiting-for-real-worker-failure-job-panel.png",
+    "capture_ms": 1793116385273,
+    "display_duration_ms": 1175
+  },
+  {
+    "file": "frames/frame-005.png",
+    "capture_ms": 1793116386448,
+    "display_duration_ms": 1007
+  },
+  {
+    "file": "frames/frame-006.png",
+    "capture_ms": 1793116387455,
+    "display_duration_ms": 1029
+  },
+  {
+    "file": "frames/frame-007.png",
+    "capture_ms": 1793116388484,
+    "display_duration_ms": 911
+  },
+  {
+    "file": "frames/frame-008.png",
+    "capture_ms": 1793116389395,
+    "display_duration_ms": 1072
+  },
+  {
+    "file": "frames/frame-009.png",
+    "capture_ms": 1793116390467,
+    "display_duration_ms": 955
+  },
+  {
+    "file": "frames/frame-010.png",
+    "capture_ms": 1793116391422,
+    "display_duration_ms": 1142
+  },
+  {
+    "file": "frames/frame-011.png",
+    "capture_ms": 1793116392564,
+    "display_duration_ms": 592
+  },
+  {
+    "file": "terminal-failed-job-panel.png",
+    "capture_ms": 1793116393156,
+    "display_duration_ms": 1282
+  },
+  {
+    "file": "frames/frame-013.png",
+    "capture_ms": 1793116394438,
+    "display_duration_ms": 1042
+  },
+  {
+    "file": "frames/frame-014.png",
+    "capture_ms": 1793116395480,
+    "display_duration_ms": 992
+  },
+  {
+    "file": "frames/frame-015.png",
+    "capture_ms": 1793116396472,
+    "display_duration_ms": 992
+  },
+  {
+    "file": "frames/frame-016.png",
+    "capture_ms": 1793116397464,
+    "display_duration_ms": 984
+  },
+  {
+    "file": "frames/frame-017.png",
+    "capture_ms": 1793116398448,
+    "display_duration_ms": 982
+  },
+  {
+    "file": "frames/frame-018.png",
+    "capture_ms": 1793116399430,
+    "display_duration_ms": 242
+  },
+  {
+    "file": "polling-still-stopped-job-panel.png",
+    "capture_ms": 1793116399672,
+    "display_duration_ms": 1200
+  }
+]

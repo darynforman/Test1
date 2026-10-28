@@ -1,0 +1,54 @@
+{
+  "job": {
+    "version": 2,
+    "stage": "starting",
+    "variants_completed": 0,
+    "simulation_step": 0,
+    "id": "d05466ed-138e-497f-bc70-16410e3f4d01",
+    "image_id": "41f4f212-ada6-4181-a4b5-4a9ede954ba9",
+    "status": "processing",
+    "queued_at": "2026-10-27T09:53:03.849487-06:00",
+    "started_at": "2026-10-27T09:53:04.057794-06:00",
+    "completed_at": null,
+    "failed_at": null,
+    "status_url": "/v1/jobs/d05466ed-138e-497f-bc70-16410e3f4d01"
+  },
+  "entries": [
+    {
+      "request_id": 1,
+      "job_id": "d05466ed-138e-497f-bc70-16410e3f4d01",
+      "mode": "short",
+      "initial": true,
+      "after": null,
+      "start_ms": 1793116383863,
+      "outcome": "initial_200",
+      "receipt_ms": 1793116383868,
+      "http_status": 200,
+      "version": 1,
+      "render_ms": 1793116383869,
+      "end_ms": 1793116383869
+    },
+    {
+      "request_id": 2,
+      "job_id": "d05466ed-138e-497f-bc70-16410e3f4d01",
+      "mode": "short",
+      "initial": false,
+      "after": null,
+      "start_ms": 1793116384901,
+      "outcome": "newer_200",
+      "receipt_ms": 1793116384910,
+      "http_status": 200,
+      "version": 2,
+      "render_ms": 1793116384910,
+      "end_ms": 1793116384910
+    }
+  ],
+  "visible": true,
+  "retrieval_error": false,
+  "worker_error": false,
+  "worker_error_text": "",
+  "upload_error": "",
+  "indicator": "Short polling \u00b7 1 second after each response",
+  "mode": "short",
+  "title": "Processing image"
+}

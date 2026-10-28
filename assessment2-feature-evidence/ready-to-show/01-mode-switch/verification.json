@@ -1,0 +1,31 @@
+{
+  "demonstration": "mode_switch",
+  "job_id": "0f987258-0dfd-4df2-8f3f-6886d5d71bdc",
+  "observed_terminal_state": "completed",
+  "real_browser_UI": true,
+  "source_unchanged": true,
+  "upload_POSTs": 1,
+  "browser_requests_at_terminal": 12,
+  "browser_requests_after_six_seconds": 12,
+  "stop_observed_for_ms": 6520,
+  "no_pending_requests": true,
+  "same_job_throughout": true,
+  "checks": {
+    "long_to_short_while_processing": true,
+    "short_to_long_while_processing": true,
+    "old_long_poll_cancelled": true,
+    "final_three_variants": true
+  },
+  "database_terminal_record": {
+    "public_id": "0f987258-0dfd-4df2-8f3f-6886d5d71bdc",
+    "status": "completed",
+    "version": 6,
+    "variants_completed": 3,
+    "error_message": null,
+    "started_at": "2026-10-27T09:48:46.17104-06:00",
+    "completed_at": "2026-10-27T09:49:01.425298-06:00",
+    "failed_at": null
+  },
+  "recording": "Time-sampled actual browser screenshots; GIF frame durations follow capture timestamps. Not a full-frame-rate video.",
+  "independent_packaging_audit": "Source and 30-run CSV hashes rechecked against the pre-capture manifest; screenshots/state/logs independently reconciled."
+}

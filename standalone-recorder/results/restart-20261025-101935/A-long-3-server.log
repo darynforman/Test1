@@ -1,0 +1,13 @@
+time=2026-10-25T10:46:24.674-06:00 level=INFO msg="database connection pool established" worker_delay=30s simulation_interval=0s
+time=2026-10-25T10:47:07.348-06:00 level=INFO msg=job_commit job_id=fd2fefe0-83f4-4aa3-8d14-7e0dfd6d94d5 version=1 status=queued stage=starting variants_completed=0 simulation_step=0 commit_ms=1792946827348
+time=2026-10-25T10:47:07.356-06:00 level=INFO msg=observation job_id=fd2fefe0-83f4-4aa3-8d14-7e0dfd6d94d5 db_reads=1
+time=2026-10-25T10:47:07.678-06:00 level=INFO msg=job_commit job_id=fd2fefe0-83f4-4aa3-8d14-7e0dfd6d94d5 version=2 status=processing stage=starting variants_completed=0 simulation_step=0 commit_ms=1792946827678
+time=2026-10-25T10:47:07.679-06:00 level=INFO msg=observation job_id=fd2fefe0-83f4-4aa3-8d14-7e0dfd6d94d5 db_reads=2
+time=2026-10-25T10:47:27.687-06:00 level=INFO msg=observation job_id=fd2fefe0-83f4-4aa3-8d14-7e0dfd6d94d5 db_reads=2
+time=2026-10-25T10:47:37.734-06:00 level=INFO msg=job_commit job_id=fd2fefe0-83f4-4aa3-8d14-7e0dfd6d94d5 version=3 status=processing stage=thumbnail_ready variants_completed=1 simulation_step=0 commit_ms=1792946857734
+time=2026-10-25T10:47:37.736-06:00 level=INFO msg=observation job_id=fd2fefe0-83f4-4aa3-8d14-7e0dfd6d94d5 db_reads=2
+time=2026-10-25T10:47:37.778-06:00 level=INFO msg=job_commit job_id=fd2fefe0-83f4-4aa3-8d14-7e0dfd6d94d5 version=4 status=processing stage=preview_ready variants_completed=2 simulation_step=0 commit_ms=1792946857778
+time=2026-10-25T10:47:37.780-06:00 level=INFO msg=observation job_id=fd2fefe0-83f4-4aa3-8d14-7e0dfd6d94d5 db_reads=2
+time=2026-10-25T10:47:37.862-06:00 level=INFO msg=job_commit job_id=fd2fefe0-83f4-4aa3-8d14-7e0dfd6d94d5 version=5 status=processing stage=display_ready variants_completed=3 simulation_step=0 commit_ms=1792946857862
+time=2026-10-25T10:47:37.863-06:00 level=INFO msg=job_commit job_id=fd2fefe0-83f4-4aa3-8d14-7e0dfd6d94d5 version=6 status=completed stage=display_ready variants_completed=3 simulation_step=0 commit_ms=1792946857863
+time=2026-10-25T10:47:37.864-06:00 level=INFO msg=observation job_id=fd2fefe0-83f4-4aa3-8d14-7e0dfd6d94d5 db_reads=3

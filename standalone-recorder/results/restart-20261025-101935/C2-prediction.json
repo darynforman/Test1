@@ -1,0 +1,17 @@
+{
+  "condition": "C2",
+  "prediction": "short polling",
+  "reason": "cause updates occur very frequently allowing each request to retrieve multiple updates at once",
+  "author": "user",
+  "written_before_runs": "2026-10-25T17:18:08.308755+00:00",
+  "clarification": "Each response is the latest snapshot, not a list or replay of intermediate updates. Several committed updates may be reflected in a single version jump.",
+  "setup": {
+    "quiet_delay_seconds": 0,
+    "simulation_enabled": true,
+    "simulation_duration_seconds": 10,
+    "simulation_interval_ms": 200,
+    "image": "VALID-beach.png",
+    "additional_latency": "none"
+  },
+  "status": "Prediction saved; no C2 runs started."
+}

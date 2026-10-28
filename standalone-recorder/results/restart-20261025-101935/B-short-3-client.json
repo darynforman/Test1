@@ -1,0 +1,30 @@
+[
+  {
+    "request_id": 1,
+    "job_id": "e9dcd350-5739-4720-b1cc-9a3fa4ecfdd8",
+    "mode": "short",
+    "initial": true,
+    "after": null,
+    "start_ms": 1792947453307,
+    "outcome": "initial_200",
+    "receipt_ms": 1792947453337,
+    "http_status": 200,
+    "version": 1,
+    "render_ms": 1792947453380,
+    "end_ms": 1792947453380
+  },
+  {
+    "request_id": 2,
+    "job_id": "e9dcd350-5739-4720-b1cc-9a3fa4ecfdd8",
+    "mode": "short",
+    "initial": false,
+    "after": null,
+    "start_ms": 1792947454390,
+    "outcome": "newer_200",
+    "receipt_ms": 1792947454399,
+    "http_status": 200,
+    "version": 6,
+    "render_ms": 1792947454420,
+    "end_ms": 1792947454420
+  }
+]

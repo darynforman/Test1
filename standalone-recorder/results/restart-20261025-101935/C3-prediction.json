@@ -1,0 +1,19 @@
+{
+  "condition": "C3",
+  "prediction": "it will increase the completion detection delay for both short and long polling because responses take longer to reach the client",
+  "request_count_prediction": "roughly the same answer",
+  "author": "user",
+  "written_before_runs": "2026-10-25T17:29:27.134242+00:00",
+  "setup": {
+    "quiet_delay_seconds": 0,
+    "simulation_enabled": true,
+    "simulation_duration_seconds": 10,
+    "simulation_interval_ms": 200,
+    "image": "VALID-beach.png",
+    "target_additional_round_trip_latency_ms": 200,
+    "latency_verification": "Not configured or verified yet; no C3 runs started."
+  },
+  "status": "Both predictions saved before testing. Latency setup and verification still required; no C3 runs started.",
+  "request_count_interpretation": "Roughly the same number of requests as C2 for both observation modes.",
+  "request_count_prediction_saved_at": "2026-10-25T17:30:36.909509+00:00"
+}

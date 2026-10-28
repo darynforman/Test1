@@ -1,0 +1,69 @@
+{
+  "job": {
+    "version": 3,
+    "stage": "starting",
+    "variants_completed": 0,
+    "simulation_step": 0,
+    "id": "c1b2662d-d29f-4766-80c4-d86f338149f3",
+    "image_id": "8cda180f-b691-4ea6-a997-a92e665100b6",
+    "status": "failed",
+    "error": "Image processing could not finish. Please submit the image again.",
+    "queued_at": "2026-10-27T09:52:47.942188-06:00",
+    "started_at": "2026-10-27T09:52:48.058213-06:00",
+    "completed_at": null,
+    "failed_at": "2026-10-27T09:52:56.06134-06:00",
+    "status_url": "/v1/jobs/c1b2662d-d29f-4766-80c4-d86f338149f3"
+  },
+  "entries": [
+    {
+      "request_id": 1,
+      "job_id": "c1b2662d-d29f-4766-80c4-d86f338149f3",
+      "mode": "long",
+      "initial": true,
+      "after": null,
+      "start_ms": 1793116367968,
+      "outcome": "initial_200",
+      "receipt_ms": 1793116367982,
+      "http_status": 200,
+      "version": 1,
+      "render_ms": 1793116368038,
+      "end_ms": 1793116368039
+    },
+    {
+      "request_id": 2,
+      "job_id": "c1b2662d-d29f-4766-80c4-d86f338149f3",
+      "mode": "long",
+      "initial": false,
+      "after": 1,
+      "start_ms": 1793116368047,
+      "outcome": "newer_200",
+      "receipt_ms": 1793116368071,
+      "http_status": 200,
+      "version": 2,
+      "render_ms": 1793116368072,
+      "end_ms": 1793116368072
+    },
+    {
+      "request_id": 3,
+      "job_id": "c1b2662d-d29f-4766-80c4-d86f338149f3",
+      "mode": "long",
+      "initial": false,
+      "after": 2,
+      "start_ms": 1793116368072,
+      "outcome": "newer_200",
+      "receipt_ms": 1793116376067,
+      "http_status": 200,
+      "version": 3,
+      "render_ms": 1793116376068,
+      "end_ms": 1793116376068
+    }
+  ],
+  "visible": true,
+  "retrieval_error": false,
+  "worker_error": true,
+  "worker_error_text": "Image processing could not finish. Please submit the image again.",
+  "upload_error": "",
+  "indicator": "Status checking stopped",
+  "mode": "long",
+  "title": "Processing failed"
+}

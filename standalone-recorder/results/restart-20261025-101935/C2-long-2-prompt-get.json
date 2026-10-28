@@ -1,0 +1,18 @@
+{
+  "latency_setting": "No added latency; fresh Firefox profile with default network settings",
+  "tool": "Firefox WebDriver; browser performance.now() for elapsed request timing only",
+  "readings": [
+    {
+      "status": 200,
+      "round_trip_ms": 74
+    },
+    {
+      "status": 200,
+      "round_trip_ms": 49
+    },
+    {
+      "status": 200,
+      "round_trip_ms": 32
+    }
+  ]
+}

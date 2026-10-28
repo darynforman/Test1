@@ -1,0 +1,37 @@
+{
+  "run_id": "A-long-1",
+  "condition": "A",
+  "mode": "long",
+  "repetition": 1,
+  "job_id": "a2bc60e2-af1d-474e-b31f-410c0f2e0a9f",
+  "image": "VALID-beach.png",
+  "requests_started": 5,
+  "initial_200": 1,
+  "newer_200": 3,
+  "unchanged_200": 0,
+  "no_change_204": 1,
+  "retrieval_errors": 0,
+  "cancellations": 0,
+  "baseline_version": 1,
+  "terminal_version": 6,
+  "distinct_new_versions_seen": 3,
+  "received_versions": [
+    1,
+    2,
+    3,
+    6
+  ],
+  "missing_versions": [
+    4,
+    5
+  ],
+  "started_at": "2026-10-24T14:11:28.678114-06:00",
+  "completed_at": "2026-10-24T14:11:58.980388-06:00",
+  "processing_ms": 30302.274,
+  "known_artificial_delay_ms": 30000,
+  "terminal_receipt_ms": 1792872719809,
+  "terminal_commit_ms": 1792872718981,
+  "detection_ms": 828,
+  "observation_db_reads": 9,
+  "notes": "Only the matching job is counted; original browser download includes earlier jobs. Processing duration comes from final response timestamps. Detection is a same-machine wall-clock estimate with millisecond resolution and scheduling uncertainty. Retained the observed delay without adjustment."
+}
