@@ -13,7 +13,10 @@ An asynchronous image-processing application built with Go, PostgreSQL, HTML, CS
 - Variant metadata and completed state commit together after all files exist. Processing failures record a safe error and `failed_at`.
 - `GET /v1/images/{image_id}/variants/{name}` serves known variants only after completion.
 
-The browser automatically polls the accepted job every second, renders its lifecycle, and offers Try again when status retrieval fails.
+The browser supports short polling (one second after each response) and long polling
+(up to 20 seconds per request). It displays job progress and offers Try again when
+status retrieval fails. Switching observation modes or stopping observation does
+not stop the background worker.
 
 ## Setup
 
@@ -37,7 +40,7 @@ git --version
 make --version
 go version
 psql --version
-node --version
+node --version  # Optional: only needed for frontend tests
 ```
 
 `psql --version` checks the client. The database connection check below verifies
@@ -45,13 +48,18 @@ the server and the UUID functions used by this project.
 
 ### 2. Get the project
 
-If you already have this checkout, use it and skip cloning.
+Use the supplied **test2** project folder (or extract the submitted archive first).
+Open a terminal in that folder, where `go.mod` and `Makefile` are located:
 
 ```bash
-git clone --branch week4 https://github.com/darynforman/Test1.git
-cd Test1
+cd /path/to/test2  # Replace with the actual location of the supplied folder.
 go mod download
 ```
+
+The first download requires internet access. Use the submitted folder rather than
+cloning the older `week4` branch, which does not contain this Assessment 2 version.
+There is no npm installation or frontend build step. Node.js is optional unless
+you want to run the frontend tests.
 
 ### 3. Create a local database (first installation only)
 
@@ -109,7 +117,20 @@ tracker and must not be rerun against existing tables.
 
 For an existing database, skip `make db-init` and follow
 [Internal and public IDs](#internal-and-public-ids) only if the public-ID columns
-are missing. Existing databases that already have both columns need no update.
+are missing. Also check the observation columns described below; having public IDs alone is
+not enough for this version.
+
+In `make db-shell`, inspect `\d jobs`. This version requires `version`, `stage`,
+`variants_completed`, and `simulation_step`. If all four are absent, exit psql
+with `\q`, then apply the observation migration once as the database owner:
+
+```bash
+psql "$IMAGELAB_DB_DSN" -X -v ON_ERROR_STOP=1 --single-transaction -f migrations/000004_job_observation.up.sql
+```
+
+If all four columns exist, skip that command. If only some exist, reconcile the
+schema before running the app; do not rerun the migration against existing columns.
+A fresh database initialized with `make db-init` already includes this migration.
 
 ### 5. Start and open ImageLab
 
@@ -121,6 +142,15 @@ Leave that terminal running and open <http://localhost:4000> in a browser on the
 same machine/VM. Open the app through the Go server, not as a local HTML file.
 Select a JPEG or PNG up to 10 MB, then click Process image. The browser should
 observe the job and eventually display thumbnail, preview and display variants.
+Use the observation selector to compare Short polling and Long polling. For a
+visible ten-second simulated progress phase, stop the server and restart with:
+
+```bash
+make run SIMULATION_INTERVAL=2s
+# Alternatively: make run SIMULATION_INTERVAL=200ms
+```
+
+These are demonstration settings; plain `make run` disables simulated progress.
 
 Only run **one application instance per database** to preserve the one-worker
 model. Stop it with Ctrl+C. To make processing visible during a demonstration,
@@ -151,6 +181,8 @@ go run ./cmd/api -db-dsn="$IMAGELAB_DB_DSN" -storage-dir=/path/to/writable/stora
   normal runtime permissions may not allow schema changes.
 - **uuidv7/uuidv4 does not exist:** verify that the connected PostgreSQL server is 18+.
 - **public_id column missing:** apply the existing-database update below once.
+- **version/stage/variants_completed/simulation_step column missing:** apply the
+  observation migration in step 4 if all four columns are absent.
 - **Address already in use:** stop the old app before restarting; do not run a
   second worker against the same database.
 - **Page will not load after the offline test:** change Firefox Network from
@@ -200,7 +232,7 @@ curl http://localhost:4000/v1/jobs/PUBLIC_JOB_UUID
 psql "$IMAGELAB_DB_DSN" -c 'SELECT id,image_id,status,queued_at,started_at,completed_at,failed_at,error_message FROM jobs ORDER BY id;'
 ```
 
-With the five-second delay, the response arrives before transformation completes. Repeat the status request to demonstrate state changes; these commands are optional API diagnostics. The browser observes jobs automatically every second. The completed response includes all three variant URLs and actual dimensions.
+With the five-second delay, the response arrives before transformation completes. Repeat the status request to demonstrate state changes; these commands are optional API diagnostics. The browser observes jobs using the selected short- or long-polling mode. The completed response includes all three variant URLs and actual dimensions.
 
 For the induced failure, run the integration test: it removes only a newly created test original before the worker reads it, then checks `failed`, a safe error, and no completed timestamp. No real uploaded files are touched.
 
@@ -212,7 +244,9 @@ The browser owns the local selection. The handler validates and durably accepts 
 
 ## Table migrations
 
-Each table has its own up/down migration: `000001` images, `000002` jobs, and `000003` variants. Apply up migrations in that order; roll back in reverse order because jobs and variants reference images. Down migrations delete the corresponding data.
+Each table has its own up/down migration: `000001` images, `000002` jobs, and `000003` variants. Apply up migrations in that order; roll back in reverse order because jobs and variants reference images. Migration `000004_job_observation.up.sql` then adds the job progress and version
+columns required by this version. `make db-init` includes all four migrations.
+Table down migrations delete the corresponding data.
 
 If your existing database already has all three tables, **do not rerun these create-table migrations**. Keep the existing tables and apply the public-ID update below only if those columns are missing. `make db-init` is for a fresh database. If you use a migration tracking tool, reconcile its recorded version with the three existing tables before running further migrations.
 
